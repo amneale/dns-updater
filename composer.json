@@ -1,0 +1,6 @@
+{
+    "require": {
+        "toin0u/digitalocean-v2": "~1.0",
+        "kriswallsmith/buzz": "~0.10"
+    }
+}
