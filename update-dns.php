@@ -11,31 +11,50 @@ use DigitalOceanV2\DigitalOceanV2;
 define('CONFIG_INI', 'config.ini');
 define('DOMAIN_TYPE', 'A');
 
-$config   = parse_ini_file(CONFIG_INI);
-$serverIp = trim(file_get_contents('http://icanhazip.com/'));
 
-$adapter      = new BuzzAdapter($config['access_token']);
-$digitalOcean = new DigitalOceanV2($adapter);
-$domainRecord = $digitalOcean->domainRecord();
+try {
+    $config = parse_ini_file(CONFIG_INI, true);
+    $serverIp = file_get_contents('http://icanhazip.com/');
 
-$updated = false;
-foreach ($domainRecord->getAll($config['domainName']) as $record) {
-    if ($record->type == DOMAIN_TYPE && $record->name == $config['recordName']) {
-        $domainRecord->updateData(
-            $config['domainName'],
-            $record->id,
-            $serverIp
-        );
-        $updated = true;
-        break;
+    if ($serverIp === false) {
+        throw new Exception('Failed to retrieve server IP');
     }
-}
+    $serverIp = trim($serverIp);
 
-if (!$updated) {
-    $domainRecord->create(
-        $config['domainName'],
-        DOMAIN_TYPE,
-        $config['recordName'],
-        $serverIp
-    );
+    $adapter      = new BuzzAdapter($config['access_token']);
+    $digitalOcean = new DigitalOceanV2($adapter);
+    $domainRecord = $digitalOcean->domainRecord();
+
+    $domains = (array) $config['domain'];
+    $records = $config['record'];
+
+    foreach ($domains as $domain) {
+        $records = is_array($records) ? $records[$domain] : (array) $records;
+        foreach ($records as $recordName) {
+            $updated = false;
+            foreach ($domainRecord->getAll($domain) as $record) {
+                if ($record->type == DOMAIN_TYPE && $record->name == $recordName) {
+                    $domainRecord->updateData(
+                        $domain,
+                        $record->id,
+                        $serverIp
+                    );
+                    $updated = true;
+                    break;
+                }
+            }
+
+            if (!$updated) {
+                $domainRecord->create(
+                    $domain,
+                    DOMAIN_TYPE,
+                    $recordName,
+                    $serverIp
+                );
+            }
+        }
+    }
+
+} catch (Exception $e) {
+    error_log($e->getMessage());
 }
