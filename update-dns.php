@@ -14,7 +14,7 @@ define('DOMAIN_TYPE', 'A');
 
 try {
     $config = parse_ini_file(CONFIG_INI, true);
-    $serverIp = file_get_contents('http://icanhazip.com/');
+    $serverIp = file_get_contents('http://www.icanhazip.com/');
 
     if ($serverIp === false) {
         throw new Exception('Failed to retrieve server IP');
