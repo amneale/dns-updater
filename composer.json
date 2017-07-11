@@ -9,7 +9,8 @@
         "beberlei/assert": "^2.7",
         "guzzlehttp/guzzle": "^6.3",
         "symfony/dependency-injection": "^3.3",
-        "symfony/config": "^3.3"
+        "symfony/config": "^3.3",
+        "incenteev/composer-parameter-handler": "^2.1"
     },
     "require-dev": {
         "phpspec/phpspec": "^3.4"
@@ -19,6 +20,19 @@
             "DnsUpdater\\": "src/DnsUpdater",
             "IpResolution\\": "src/IpResolution",
             "App\\": "src/App"
+        }
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"
+        ],
+        "post-update-cmd": [
+            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"
+        ]
+    },
+    "extra": {
+        "incenteev-parameters": {
+            "file": "app/config/parameters.yml"
         }
     },
     "authors": [
