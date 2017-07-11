@@ -1,6 +1,30 @@
 {
+    "name": "amneale/digital-ocean-dns-updater",
+    "description": "DigitalOcean DNS updater",
+    "type": "project",
     "require": {
-        "toin0u/digitalocean-v2": "~1.0",
-        "kriswallsmith/buzz": "~0.10"
-    }
+        "php": "^7.0",
+        "toin0u/digitalocean-v2": "^2.2",
+        "symfony/console": "^3.3",
+        "beberlei/assert": "^2.7",
+        "guzzlehttp/guzzle": "^6.3",
+        "symfony/dependency-injection": "^3.3",
+        "symfony/config": "^3.3"
+    },
+    "require-dev": {
+        "phpspec/phpspec": "^3.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "DnsUpdater\\": "src/DnsUpdater",
+            "IpResolution\\": "src/IpResolution",
+            "App\\": "src/App"
+        }
+    },
+    "authors": [
+        {
+            "name": "Adam Neale",
+            "email": "adam@adam-neale.co.uk"
+        }
+    ]
 }

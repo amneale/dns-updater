@@ -1,0 +1,26 @@
+services:
+    digital_ocean_v2.adapter:
+        class: DigitalOceanV2\Adapter\GuzzleHttpAdapter
+        arguments: ['%digital_ocean_access_token%']
+        public: false
+
+    digital_ocean_v2.api:
+        class: DigitalOceanV2\DigitalOceanV2
+        arguments: ['@digital_ocean_v2.adapter']
+        public: false
+
+    guzzle_http.client:
+        class: GuzzleHttp\Client
+        public: false
+
+    ip_resolver:
+        class: IpResolution\Resolver\CanIHazResolver
+        arguments: ['@guzzle_http.client']
+        public: false
+
+    dns_update_command:
+        class: App\DnsUpdateCommand
+        arguments:
+            - '@ip_resolver'
+            - '@digital_ocean_v2.api'
+            - '%domains%'
