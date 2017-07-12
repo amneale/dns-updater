@@ -1,3 +1,15 @@
 imports:
     - { resource: parameters.yml }
     - { resource: services.yml }
+
+monolog:
+    handlers:
+        main:
+            type: rotating_file
+            path: '%app_log_path%'
+            level: debug
+            max_files: '%app_log_max_files%'
+        error:
+            type: stream
+            path: '%error_log_path%'
+            level: error

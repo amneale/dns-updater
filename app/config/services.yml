@@ -23,4 +23,5 @@ services:
         arguments:
             - '@ip_resolver'
             - '@digital_ocean_v2.api'
+            - '@logger'
             - '%domains%'

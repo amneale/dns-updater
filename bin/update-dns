@@ -1,6 +1,7 @@
 #!/usr/bin/env php
 <?php
 
+use Symfony\Bundle\MonologBundle\DependencyInjection\Compiler\LoggerChannelPass;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Console\Application;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -9,12 +10,17 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 require __DIR__ . '/../vendor/autoload.php';
 
 $container = new ContainerBuilder();
+$container->registerExtension((new \Symfony\Bundle\MonologBundle\DependencyInjection\MonologExtension()));
+$container->addCompilerPass(new LoggerChannelPass());
+
 $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../app/config'));
-$loader->load('config.yml'); // TODO split out, add dist
+$loader->load('config.yml');
+
+$container->compile();
 
 $application = new Application('update-dns', '1.0.0');
-
 $command = $container->get('dns_update_command');
+
 $application->add($command);
 $application->setDefaultCommand($command->getName(), true);
 $application->run();

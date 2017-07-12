@@ -1,3 +1,4 @@
 .idea/
 vendor/
 app/config/parameters.yml
+var/logs/*.log

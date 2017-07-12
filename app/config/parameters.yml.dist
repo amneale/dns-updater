@@ -1,3 +1,7 @@
 parameters:
     digital_ocean_access_token: ~
     domains: ~
+
+    app_log_path: "var/logs/app.log"
+    app_log_max_files: 3
+    error_log_path: "var/logs/error.log"
