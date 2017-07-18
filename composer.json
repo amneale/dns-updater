@@ -2,6 +2,12 @@
     "name": "amneale/dns-updater",
     "description": "DNS updater",
     "type": "project",
+    "authors": [
+        {
+            "name": "Adam Neale",
+            "email": "adam@adam-neale.co.uk"
+        }
+    ],
     "require": {
         "php": "^7.0",
         "toin0u/digitalocean-v2": "^2.2",
@@ -14,11 +20,17 @@
         "symfony/monolog-bundle": "^3.1"
     },
     "require-dev": {
-        "phpspec/phpspec": "^3.4"
+        "phpspec/phpspec": "^3.4",
+        "behat/behat": "^3.3"
     },
     "autoload": {
         "psr-4": {
             "DnsUpdater\\": "src/DnsUpdater"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Fake\\": "features/bootstrap/fake"
         }
     },
     "scripts": {
@@ -29,15 +41,10 @@
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"
         ]
     },
+    "bin": ["bin/update-dns"],
     "extra": {
         "incenteev-parameters": {
             "file": "app/config/parameters.yml"
         }
-    },
-    "authors": [
-        {
-            "name": "Adam Neale",
-            "email": "adam@adam-neale.co.uk"
-        }
-    ]
+    }
 }

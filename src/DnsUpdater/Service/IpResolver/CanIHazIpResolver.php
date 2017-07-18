@@ -1,11 +1,11 @@
 <?php
 
-namespace DnsUpdater\Ip\Resolver;
+namespace DnsUpdater\Service\IpResolver;
 
+use DnsUpdater\Ip;
 use GuzzleHttp\ClientInterface;
-use DnsUpdater\Ip\Ip;
 
-final class CanIHazResolver implements Resolver
+final class CanIHazIpResolver implements IpResolver
 {
     const URI = 'canihazip.com/s';
 

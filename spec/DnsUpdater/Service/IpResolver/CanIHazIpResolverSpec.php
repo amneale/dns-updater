@@ -1,15 +1,15 @@
 <?php
 
-namespace spec\DnsUpdater\Ip\Resolver;
+namespace spec\DnsUpdater\Service\IpResolver;
 
+use DnsUpdater\Service\IpResolver\CanIHazIpResolver;
+use DnsUpdater\Service\IpResolver\IpResolver;
 use GuzzleHttp\ClientInterface;
-use DnsUpdater\Ip\Resolver\CanIHazResolver;
-use DnsUpdater\Ip\Resolver\Resolver;
 use PhpSpec\ObjectBehavior;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 
-class CanIHazResolverSpec extends ObjectBehavior
+class CanIHazIpResolverSpec extends ObjectBehavior
 {
     const TEST_IP = '192.168.0.1';
 
@@ -20,12 +20,12 @@ class CanIHazResolverSpec extends ObjectBehavior
 
     function it_implements_ip_resolver()
     {
-        $this->shouldImplement(Resolver::class);
+        $this->shouldImplement(IpResolver::class);
     }
 
     function it_gets_an_ip(ClientInterface $client, ResponseInterface $response, StreamInterface $stream)
     {
-        $client->request('get', CanIHazResolver::URI)->willReturn($response);
+        $client->request('get', CanIHazIpResolver::URI)->willReturn($response);
         $response->getBody()->willReturn($stream);
         $stream->getContents()->willReturn(self::TEST_IP);
 

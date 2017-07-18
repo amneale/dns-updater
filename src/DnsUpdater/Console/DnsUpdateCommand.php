@@ -5,8 +5,10 @@ namespace DnsUpdater\Console;
 use DigitalOceanV2\Api\DomainRecord as DomainRecordApi;
 use DigitalOceanV2\DigitalOceanV2;
 use DigitalOceanV2\Entity\DomainRecord;
-use DnsUpdater\Ip\Ip;
-use DnsUpdater\Ip\Resolver\Resolver;
+use DnsUpdater\Ip;
+use DnsUpdater\Record;
+use DnsUpdater\Service\IpResolver\IpResolver;
+use DnsUpdater\Service\RecordPersister\RecordPersister;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -14,17 +16,15 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class DnsUpdateCommand extends Command
 {
-    const ADDRESS_RECORD = 'A';
-
     /**
-     * @var Resolver
+     * @var IpResolver
      */
     private $ipResolver;
 
     /**
-     * @var DomainRecordApi
+     * @var RecordPersister
      */
-    private $domainRecordApi;
+    private $recordPersister;
 
     /**
      * @var LoggerInterface
@@ -37,24 +37,19 @@ class DnsUpdateCommand extends Command
     private $domains;
 
     /**
-     * @var DomainRecord[]
-     */
-    private $domainRecords;
-
-    /**
-     * @param Resolver $ipResolver
-     * @param DigitalOceanV2 $digitalOceanApi
+     * @param IpResolver $ipResolver
+     * @param RecordPersister $recordPersister
      * @param LoggerInterface $logger
      * @param string[] $domains
      */
     public function __construct(
-        Resolver $ipResolver,
-        DigitalOceanV2 $digitalOceanApi,
+        IpResolver $ipResolver,
+        RecordPersister $recordPersister,
         LoggerInterface $logger,
         array $domains
     ) {
         $this->ipResolver = $ipResolver;
-        $this->domainRecordApi = $digitalOceanApi->domainRecord();
+        $this->recordPersister = $recordPersister;
         $this->logger = $logger;
         $this->domains = $domains;
 
@@ -79,9 +74,12 @@ class DnsUpdateCommand extends Command
             $ip = $this->ipResolver->getIp();
 
             $this->logger->info('Detected a new IP', ['IP' => (string) $ip]);
-            foreach ($this->domains as $domainName => $recordNames) {
-                foreach ($recordNames as $recordName) {
-                    $this->upsertDomainRecord($domainName, $recordName, $ip);
+            foreach ($this->domains as $domain => $hosts) {
+                foreach ($hosts as $host) {
+                    $persistedRecord = $this->recordPersister->persist(
+                        new Record($domain, $host, Record::TYPE_ADDRESS, (string) $ip)
+                    );
+                    $this->logSuccess($persistedRecord);
                 }
             }
         } catch (\Exception $exception) {
@@ -90,41 +88,18 @@ class DnsUpdateCommand extends Command
     }
 
     /**
-     * @param string $domainName
-     * @param string $recordName
-     * @param Ip $ip
+     * @param Record $record
      */
-    private function upsertDomainRecord(string $domainName, string $recordName, Ip $ip)
+    private function logSuccess(Record $record)
     {
-        $domainRecord = $this->fetchDomainRecord($domainName, $recordName);
-        $upsertedRecord = $domainRecord
-            ? $this->domainRecordApi->updateData($domainName, $domainRecord->id, (string) $ip)
-            : $this->domainRecordApi->create($domainName, self::ADDRESS_RECORD, $recordName, (string) $ip);
-
         $this->logger->info(
-            ($domainRecord ? 'Updated' : 'Inserted') . ' record',
-            ['record' => $upsertedRecord]
+            'Updated record',
+            [
+                'domain' => $record->getDomain(),
+                'host' => $record->getHost(),
+                'type' => $record->getType(),
+                'data' => $record->getData(),
+            ]
         );
-    }
-
-    /**
-     * @param string $domainName
-     * @param string $recordName
-     *
-     * @return DomainRecord|null
-     */
-    private function fetchDomainRecord(string $domainName, string $recordName)
-    {
-        if (!isset($this->domainRecords[$domainName])) {
-            $this->domainRecords[$domainName] = $this->domainRecordApi->getAll($domainName);
-        }
-
-        foreach ($this->domainRecords[$domainName] as $domainRecord) {
-            if ($recordName === $domainRecord->name && self::ADDRESS_RECORD === $domainRecord->type) {
-                return $domainRecord;
-            }
-        }
-
-        return null;
     }
 }

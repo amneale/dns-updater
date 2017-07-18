@@ -13,8 +13,13 @@ services:
         class: GuzzleHttp\Client
         public: false
 
+    record_persister:
+        class: DnsUpdater\Service\RecordPersister\DigitalOceanAdapter
+        arguments: ['@digital_ocean_v2.api']
+        public: false
+
     ip_resolver:
-        class: DnsUpdater\IpResolution\Resolver\CanIHazResolver
+        class: DnsUpdater\Service\IpResolver\CanIHazIpResolver
         arguments: ['@guzzle_http.client']
         public: false
 
@@ -22,6 +27,6 @@ services:
         class: DnsUpdater\Console\DnsUpdateCommand
         arguments:
             - '@ip_resolver'
-            - '@digital_ocean_v2.api'
+            - '@record_persister'
             - '@logger'
             - '%domains%'
