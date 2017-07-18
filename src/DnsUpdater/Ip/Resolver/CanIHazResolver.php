@@ -1,9 +1,9 @@
 <?php
 
-namespace IpResolution\Resolver;
+namespace DnsUpdater\Ip\Resolver;
 
 use GuzzleHttp\ClientInterface;
-use IpResolution\Ip;
+use DnsUpdater\Ip\Ip;
 
 final class CanIHazResolver implements Resolver
 {

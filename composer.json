@@ -1,6 +1,6 @@
 {
-    "name": "amneale/digital-ocean-dns-updater",
-    "description": "DigitalOcean DNS updater",
+    "name": "amneale/dns-updater",
+    "description": "DNS updater",
     "type": "project",
     "require": {
         "php": "^7.0",
@@ -18,9 +18,7 @@
     },
     "autoload": {
         "psr-4": {
-            "DnsUpdater\\": "src/DnsUpdater",
-            "IpResolution\\": "src/IpResolution",
-            "App\\": "src/App"
+            "DnsUpdater\\": "src/DnsUpdater"
         }
     },
     "scripts": {

@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\IpResolution;
+namespace spec\DnsUpdater\Ip;
 
 use PhpSpec\ObjectBehavior;
 
@@ -15,6 +15,12 @@ class IpSpec extends ObjectBehavior
 
     function it_can_be_represented_as_a_string()
     {
+        $this->__toString()->shouldReturn(self::TEST_IP);
+    }
+
+    function it_can_be_constructed_with_an_untrimmed_string()
+    {
+        $this->beConstructedWith(self::TEST_IP . PHP_EOL);
         $this->__toString()->shouldReturn(self::TEST_IP);
     }
 

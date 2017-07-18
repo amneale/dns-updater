@@ -1,10 +1,10 @@
 <?php
 
-namespace spec\App\Ip;
+namespace spec\DnsUpdater\Ip\Resolver;
 
 use GuzzleHttp\ClientInterface;
-use IpResolution\Resolver\CanIHazResolver;
-use IpResolution\Resolver\Resolver;
+use DnsUpdater\Ip\Resolver\CanIHazResolver;
+use DnsUpdater\Ip\Resolver\Resolver;
 use PhpSpec\ObjectBehavior;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;

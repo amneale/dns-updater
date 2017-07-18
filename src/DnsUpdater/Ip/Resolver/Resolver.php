@@ -1,8 +1,8 @@
 <?php
 
-namespace IpResolution\Resolver;
+namespace DnsUpdater\Ip\Resolver;
 
-use IpResolution\Ip;
+use DnsUpdater\Ip\Ip;
 
 interface Resolver
 {

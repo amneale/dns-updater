@@ -14,12 +14,12 @@ services:
         public: false
 
     ip_resolver:
-        class: IpResolution\Resolver\CanIHazResolver
+        class: DnsUpdater\IpResolution\Resolver\CanIHazResolver
         arguments: ['@guzzle_http.client']
         public: false
 
     dns_update_command:
-        class: App\DnsUpdateCommand
+        class: DnsUpdater\Console\DnsUpdateCommand
         arguments:
             - '@ip_resolver'
             - '@digital_ocean_v2.api'

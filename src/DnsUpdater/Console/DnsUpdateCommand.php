@@ -1,12 +1,12 @@
 <?php
 
-namespace App;
+namespace DnsUpdater\Console;
 
 use DigitalOceanV2\Api\DomainRecord as DomainRecordApi;
 use DigitalOceanV2\DigitalOceanV2;
 use DigitalOceanV2\Entity\DomainRecord;
-use IpResolution\Ip;
-use IpResolution\Resolver\Resolver;
+use DnsUpdater\Ip\Ip;
+use DnsUpdater\Ip\Resolver\Resolver;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

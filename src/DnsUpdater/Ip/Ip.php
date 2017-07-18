@@ -1,6 +1,6 @@
 <?php
 
-namespace IpResolution;
+namespace DnsUpdater\Ip;
 
 use Assert\Assert;
 
@@ -16,6 +16,7 @@ class Ip
      */
     public function __construct(string $ip)
     {
+        $ip = trim($ip);
         Assert::that($ip)->regex('/^(?:\d{1,3}\.){3}\d{1,3}$/', "Invalid IP");
 
         $this->ip = $ip;
