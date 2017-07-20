@@ -80,6 +80,7 @@ class DnsUpdateCommand extends Command
     {
         try {
             $ip = $this->ipResolver->getIp();
+
             if ($this->shouldUpdateDnsRecords($ip)) {
                 $this->updateDnsRecords($ip);
                 $this->cache->set('ip', (string) $ip);
@@ -117,7 +118,6 @@ class DnsUpdateCommand extends Command
                 $record = $this->recordPersister->persist(
                     new Record($domain, $host, Record::TYPE_ADDRESS, (string) $ip)
                 );
-
                 $this->logger->info(
                     'Updated record',
                     [
