@@ -8,5 +8,3 @@ Feature: Update DNS
     And my IP resolves to "123.45.67.89"
     When I update DNS records
     Then the domain A record "@" should point to "123.45.67.89"
-
-

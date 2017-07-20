@@ -2,6 +2,7 @@
 <?php
 
 use Symfony\Bundle\MonologBundle\DependencyInjection\Compiler\LoggerChannelPass;
+use Symfony\Bundle\MonologBundle\DependencyInjection\MonologExtension;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Console\Application;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -10,7 +11,7 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 require __DIR__ . '/../vendor/autoload.php';
 
 $container = new ContainerBuilder();
-$container->registerExtension((new \Symfony\Bundle\MonologBundle\DependencyInjection\MonologExtension()));
+$container->registerExtension(new MonologExtension());
 $container->addCompilerPass(new LoggerChannelPass());
 
 $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../app/config'));
