@@ -1,4 +1,6 @@
-.idea/
+build/
 vendor/
 app/config/parameters.yml
 var/logs/*.log
+.idea/
+.DS_Store

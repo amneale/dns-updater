@@ -1,0 +1,20 @@
+language: php
+php:
+  - '7.0'
+  - '7.1'
+  - nightly
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+before_install:
+  - phpenv config-rm xdebug.ini || true
+
+install:
+  - composer install
+
+script:
+  - phpdbg -qrr ./vendor/bin/phpspec run --format=dot
+  - ./vendor/bin/behat --format=progress
+  - ./vendor/bin/coveralls

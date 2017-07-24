@@ -14,12 +14,12 @@ services:
         public: false
 
     ip_resolver:
-        class: DnsUpdater\Service\IpResolver\CanIHazIpResolver
+        class: DnsUpdater\Service\CanIHazIpResolver
         arguments: ['@guzzle_http.client']
         public: false
 
-    record_persister:
-        class: DnsUpdater\Service\RecordPersister\DigitalOceanAdapter
+    update_record_repository:
+        class: DnsUpdater\Repository\DigitalOceanAdapter
         arguments: ['@digital_ocean_v2.api']
         public: false
 
@@ -27,11 +27,16 @@ services:
         class: Symfony\Component\Cache\Simple\FilesystemCache
         public: false
 
+    update_record:
+        class: DnsUpdater\Command\UpdateRecord
+        arguments:
+            - '@ip_resolver'
+            - '@update_record_repository'
+            - '@cache'
+            - '@logger'
+
     dns_update_command:
         class: DnsUpdater\Console\DnsUpdateCommand
         arguments:
-            - '@ip_resolver'
-            - '@record_persister'
-            - '@cache'
-            - '@logger'
+            - '@update_record'
             - '%domains%'

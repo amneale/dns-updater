@@ -1,10 +1,10 @@
 <?php
 
-namespace DnsUpdater\Service\RecordPersister;
+namespace DnsUpdater\Command\Repository;
 
 use DnsUpdater\Record;
 
-interface RecordPersister
+interface UpdateRecordRepository
 {
     public function persist(Record $record): Record;
 }

@@ -28,6 +28,9 @@ final class Application extends BaseApplication
         parent::__construct('update-dns', $version);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function doRun(InputInterface $input, OutputInterface $output)
     {
         $this

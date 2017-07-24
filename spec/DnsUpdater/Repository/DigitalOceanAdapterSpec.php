@@ -1,12 +1,12 @@
 <?php
 
-namespace spec\DnsUpdater\Service\RecordPersister;
+namespace spec\DnsUpdater\Repository;
 
 use DigitalOceanV2\Api\DomainRecord as DomainRecordApi;
 use DigitalOceanV2\DigitalOceanV2;
 use DigitalOceanV2\Entity\DomainRecord;
+use DnsUpdater\Command\Repository\UpdateRecordRepository;
 use DnsUpdater\Record;
-use DnsUpdater\Service\RecordPersister\RecordPersister;
 use PhpSpec\ObjectBehavior;
 
 class DigitalOceanAdapterSpec extends ObjectBehavior
@@ -28,7 +28,7 @@ class DigitalOceanAdapterSpec extends ObjectBehavior
 
     function it_implements_record_persister_adapter()
     {
-        $this->shouldImplement(RecordPersister::class);
+        $this->shouldImplement(UpdateRecordRepository::class);
     }
 
     function it_creates_a_new_record(DomainRecordApi $domainRecordApi, Record $record)

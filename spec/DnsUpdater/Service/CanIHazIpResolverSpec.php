@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\DnsUpdater\Service\IpResolver;
+namespace spec\DnsUpdater\Service;
 
-use DnsUpdater\Service\IpResolver\CanIHazIpResolver;
-use DnsUpdater\Service\IpResolver\IpResolver;
+use DnsUpdater\Command\Service\IpResolver;
+use DnsUpdater\Service\CanIHazIpResolver;
 use GuzzleHttp\ClientInterface;
 use PhpSpec\ObjectBehavior;
 use Psr\Http\Message\ResponseInterface;

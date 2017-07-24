@@ -1,7 +1,8 @@
 <?php
 
-namespace DnsUpdater\Service\IpResolver;
+namespace DnsUpdater\Service;
 
+use DnsUpdater\Command\Service\IpResolver;
 use DnsUpdater\Ip;
 use GuzzleHttp\ClientInterface;
 

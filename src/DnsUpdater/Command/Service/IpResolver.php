@@ -1,6 +1,6 @@
 <?php
 
-namespace DnsUpdater\Service\IpResolver;
+namespace DnsUpdater\Command\Service;
 
 use DnsUpdater\Ip;
 

@@ -1,13 +1,14 @@
 <?php
 
-namespace DnsUpdater\Service\RecordPersister;
+namespace DnsUpdater\Repository;
 
 use DigitalOceanV2\Api\DomainRecord as DomainRecordApi;
 use DigitalOceanV2\DigitalOceanV2;
 use DigitalOceanV2\Entity\DomainRecord;
+use DnsUpdater\Command\Repository\UpdateRecordRepository;
 use DnsUpdater\Record;
 
-final class DigitalOceanAdapter implements RecordPersister
+final class DigitalOceanAdapter implements UpdateRecordRepository
 {
     /**
      * @var DomainRecord

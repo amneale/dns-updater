@@ -2,10 +2,10 @@
 
 namespace Fake;
 
+use DnsUpdater\Command\Repository\UpdateRecordRepository;
 use DnsUpdater\Record;
-use DnsUpdater\Service\RecordPersister\RecordPersister;
 
-class FakeRecordPersister implements RecordPersister
+class FakeUpdateRecordRepository implements UpdateRecordRepository
 {
     /**
      * @var Record[]

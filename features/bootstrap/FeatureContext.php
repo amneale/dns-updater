@@ -5,7 +5,7 @@ use Behat\Behat\Context\Context;
 use DnsUpdater\Ip;
 use DnsUpdater\Record;
 use Fake\FakeIpResolver;
-use Fake\FakeRecordPersister;
+use Fake\FakeUpdateRecordRepository;
 
 /**
  * Defines application features from the specific context.
@@ -19,14 +19,14 @@ class FeatureContext implements Context
     private $ipResolver;
 
     /**
-     * @var FakeRecordPersister
+     * @var FakeUpdateRecordRepository
      */
-    private $recordPersister;
+    private $recordRepository;
 
     public function __construct()
     {
         $this->ipResolver = new FakeIpResolver();
-        $this->recordPersister = new FakeRecordPersister();
+        $this->recordRepository = new FakeUpdateRecordRepository();
     }
 
     /**
@@ -37,9 +37,9 @@ class FeatureContext implements Context
      */
     public function thereIsAnARecordPointingAt(string $host, string $ip)
     {
-        $this->recordPersister->setExistingRecords(
+        $this->recordRepository->setExistingRecords(
             array_merge(
-                $this->recordPersister->getExistingRecords(),
+                $this->recordRepository->getExistingRecords(),
                 [new Record(self::TEST_DOMAIN, $host, Record::TYPE_ADDRESS, $ip)]
             )
         );
@@ -60,9 +60,9 @@ class FeatureContext implements Context
      */
     public function iUpdateDnsRecords()
     {
-        foreach ($this->recordPersister->getExistingRecords() as $record) {
+        foreach ($this->recordRepository->getExistingRecords() as $record) {
             $record->setData((string) $this->ipResolver->getIp());
-            $this->recordPersister->persist($record);
+            $this->recordRepository->persist($record);
         }
     }
 
@@ -88,7 +88,7 @@ class FeatureContext implements Context
     {
         $searchRecord = new Record($domain, $host, $type);
 
-        foreach ($this->recordPersister->getExistingRecords() as $record) {
+        foreach ($this->recordRepository->getExistingRecords() as $record) {
             if ($record->isSame($searchRecord)) {
                 return $record;
             }
