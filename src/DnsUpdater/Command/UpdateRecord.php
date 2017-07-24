@@ -7,6 +7,7 @@ use DnsUpdater\Command\Contract\UpdateRecordResponse;
 use DnsUpdater\Command\Repository\UpdateRecordRepository;
 use DnsUpdater\Command\Service\IpResolver;
 use DnsUpdater\Ip;
+use DnsUpdater\Record;
 use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
 
@@ -57,16 +58,17 @@ class UpdateRecord
     public function handle(UpdateRecordRequest $request, UpdateRecordResponse $response)
     {
         try {
+            $record = $request->getRecord();
+
             $ip = $this->ipResolver->getIp();
-            if (!$this->shouldUpdateRecord($ip)) {
+            if (!$this->shouldUpdateRecord($record, $ip)) {
                 return;
             }
 
-            $record = $request->getRecord();
             $record->setData($this->ipResolver->getIp());
             $record = $this->recordRepository->persist($record);
 
-            $this->cache->set('ip', (string) $ip);
+            $this->cache->set($this->getCacheKey($record), (string) $ip);
             $this->logger->info(
                 'Updated record',
                 [
@@ -84,20 +86,39 @@ class UpdateRecord
     }
 
     /**
+     * @param Record $record
      * @param Ip $ip
      *
      * @return bool
      */
-    private function shouldUpdateRecord(Ip $ip): bool
+    private function shouldUpdateRecord(Record $record, Ip $ip): bool
     {
-        if ($this->cache->has('ip') && $this->cache->get('ip') === (string) $ip) {
-            $this->logger->info('IP unchanged', ['IP' => (string) $ip]);
+        $cacheKey = $this->getCacheKey($record);
+
+        if ($this->cache->has($cacheKey) && $this->cache->get($cacheKey) === (string) $ip) {
+            $this->logger->info(
+                'IP unchanged',
+                [
+                    'domain' => $record->getDomain(),
+                    'host' => $record->getHost(),
+                    'type' => $record->getType(),
+                    'data' => $record->getData(),
+                ]
+            );
 
             return false;
         }
 
-        $this->logger->info('Detected a new IP', ['IP' => (string) $ip]);
-
         return true;
+    }
+
+    /**
+     * @param Record $record
+     *
+     * @return string
+     */
+    private function getCacheKey(Record $record): string
+    {
+        return "ip_{$record->getHost()}_{$record->getDomain()}";
     }
 }

@@ -16,6 +16,11 @@ final class CanIHazIpResolver implements IpResolver
     private $client;
 
     /**
+     * @var Ip
+     */
+    private $ip;
+
+    /**
      * @param ClientInterface $client
      */
     public function __construct(ClientInterface $client)
@@ -28,6 +33,12 @@ final class CanIHazIpResolver implements IpResolver
      */
     public function getIp(): Ip
     {
-        return new Ip($this->client->request('get', self::URI)->getBody()->getContents());
+        if (!isset($this->ip)) {
+            $this->ip = new Ip(
+                $this->client->request('get', self::URI)->getBody()->getContents()
+            );
+        }
+
+        return $this->ip;
     }
 }

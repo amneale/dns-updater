@@ -31,14 +31,15 @@ class UpdateRecordSpec extends ObjectBehavior
     ) {
         $ipResolver->getIp()->willReturn(new Ip(self::TEST_IP));
         $recordRepository->persist($record)->willReturn($record);
-        $cache->has('ip')->willReturn(true);
+        $cache->has('ip_' . self::TEST_HOST . '_' . self::TEST_DOMAIN)->willReturn(true);
+        $cache->get('ip_' . self::TEST_HOST . '_' . self::TEST_DOMAIN)->willReturn(self::TEST_IP);
 
         $request->getRecord()->willReturn($record);
 
         $record->getDomain()->willReturn(self::TEST_DOMAIN);
         $record->getHost()->willReturn(self::TEST_HOST);
         $record->getType()->willReturn(Record::TYPE_ADDRESS);
-        $record->getData()->willReturn('111.222.333.444');
+        $record->getData()->willReturn(self::TEST_IP);
 
         $this->beConstructedWith($ipResolver, $recordRepository, $cache, $logger);
     }
@@ -50,19 +51,18 @@ class UpdateRecordSpec extends ObjectBehavior
         CacheInterface $cache,
         LoggerInterface $logger
     ) {
-        $cache->get('ip')->willReturn('111.222.333.444');
-        $record->getData()->willReturn(self::TEST_IP);
+        $cache->get('ip_' . self::TEST_HOST . '_' . self::TEST_DOMAIN)->willReturn('111.222.333.444');
+        $record->getData()->willReturn('111.222.333.444');
 
-        $logger->info('Detected a new IP', ['IP' => self::TEST_IP])->shouldBeCalled();
         $record->setData(self::TEST_IP)->shouldBeCalled();
-        $cache->set('ip', self::TEST_IP)->shouldBeCalled();
+        $cache->set('ip_' . self::TEST_HOST . '_' . self::TEST_DOMAIN, self::TEST_IP)->shouldBeCalled();
         $logger->info(
             'Updated record',
             [
                 'domain' => self::TEST_DOMAIN,
                 'host' => self::TEST_HOST,
                 'type' => Record::TYPE_ADDRESS,
-                'data' => self::TEST_IP,
+                'data' => '111.222.333.444',
             ]
         )->shouldBeCalled();
         $response->setRecord($record)->shouldBeCalled();
@@ -77,9 +77,17 @@ class UpdateRecordSpec extends ObjectBehavior
         CacheInterface $cache,
         LoggerInterface $logger
     ) {
-        $cache->get('ip')->willReturn(self::TEST_IP);
+        $cache->get('ip_' . self::TEST_HOST . '_' . self::TEST_DOMAIN)->willReturn(self::TEST_IP);
 
-        $logger->info('IP unchanged', ['IP' => self::TEST_IP])->shouldBeCalled();
+        $logger->info(
+            'IP unchanged',
+            [
+                'domain' => self::TEST_DOMAIN,
+                'host' => self::TEST_HOST,
+                'type' => Record::TYPE_ADDRESS,
+                'data' => self::TEST_IP,
+            ]
+        )->shouldBeCalled();
         $record->setData(self::TEST_IP)->shouldNotBeCalled();
         $response->setRecord($record)->shouldNotBeCalled();
 
