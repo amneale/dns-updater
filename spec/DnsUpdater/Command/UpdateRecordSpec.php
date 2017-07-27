@@ -16,10 +16,8 @@ use Psr\SimpleCache\CacheInterface;
 class UpdateRecordSpec extends ObjectBehavior
 {
     const TEST_IP = '123.45.67.89';
-
-    const TEST_DOMAIN = 'test.domain';
-
-    const TEST_HOST = '@';
+    const TEST_DOMAIN = 'domain.name';
+    const TEST_HOST = 'test';
 
     function let(
         IpResolver $ipResolver,

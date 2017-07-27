@@ -18,20 +18,28 @@ class DnsUpdateCommand extends Command
     private $updateRecord;
 
     /**
+     * @var string
+     */
+    private $domain;
+
+    /**
      * @var string[]
      */
-    private $domains;
+    private $hosts;
 
     /**
      * @param UpdateRecord $updateRecord
-     * @param string[] $domains
+     * @param string $domain
+     * @param string[] $hosts
      */
     public function __construct(
         UpdateRecord $updateRecord,
-        array $domains
+        string $domain,
+        array $hosts
     ) {
         $this->updateRecord = $updateRecord;
-        $this->domains = $domains;
+        $this->domain = $domain;
+        $this->hosts = $hosts;
 
         parent::__construct();
     }
@@ -49,15 +57,13 @@ class DnsUpdateCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        foreach ($this->domains as $domain => $hosts) {
-            foreach ($hosts as $host) {
-                $this->updateRecord->handle(
-                    new UpdateRecordRequest(
-                        new Record($domain, $host, Record::TYPE_ADDRESS)
-                    ),
-                    new UpdateRecordResponse()
-                );
-            }
+        foreach ($this->hosts as $host) {
+            $this->updateRecord->handle(
+                new UpdateRecordRequest(
+                    new Record($this->domain, $host, Record::TYPE_ADDRESS)
+                ),
+                new UpdateRecordResponse()
+            );
         }
     }
 }

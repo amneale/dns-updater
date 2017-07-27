@@ -119,6 +119,8 @@ class UpdateRecord
      */
     private function getCacheKey(Record $record): string
     {
-        return "ip_{$record->getHost()}_{$record->getDomain()}";
+        $host = str_replace('@', '_AT_', $record->getHost());
+
+        return "ip_{$host}_{$record->getDomain()}";
     }
 }

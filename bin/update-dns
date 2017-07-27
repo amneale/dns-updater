@@ -5,5 +5,5 @@ use DnsUpdater\Console\Application;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-$application = new Application('1.0.0');
+$application = new Application('1.1.0');
 $application->run();

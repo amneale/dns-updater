@@ -34,9 +34,11 @@ services:
             - '@update_record_repository'
             - '@cache'
             - '@logger'
+        public: false
 
     dns_update_command:
         class: DnsUpdater\Console\DnsUpdateCommand
         arguments:
             - '@update_record'
-            - '%domains%'
+            - '%domain%'
+            - '%hosts%'
