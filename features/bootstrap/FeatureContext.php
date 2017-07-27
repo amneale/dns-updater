@@ -2,10 +2,15 @@
 
 use Assert\Assert;
 use Behat\Behat\Context\Context;
+use DnsUpdater\Command\Contract\UpdateRecordRequest;
+use DnsUpdater\Command\Contract\UpdateRecordResponse;
+use DnsUpdater\Command\UpdateRecord;
 use DnsUpdater\Ip;
 use DnsUpdater\Record;
 use Fake\FakeIpResolver;
 use Fake\FakeUpdateRecordRepository;
+use Psr\Log\NullLogger;
+use Symfony\Component\Cache\Simple\NullCache;
 
 /**
  * Defines application features from the specific context.
@@ -13,6 +18,7 @@ use Fake\FakeUpdateRecordRepository;
 class FeatureContext implements Context
 {
     const TEST_DOMAIN = 'foo.domain';
+
     /**
      * @var FakeIpResolver
      */
@@ -60,9 +66,15 @@ class FeatureContext implements Context
      */
     public function iUpdateDnsRecords()
     {
+        $updateRecordCommand = new UpdateRecord(
+            $this->ipResolver,
+            $this->recordRepository,
+            new NullCache(),
+            new NullLogger()
+        );
+
         foreach ($this->recordRepository->getExistingRecords() as $record) {
-            $record->setData((string) $this->ipResolver->getIp());
-            $this->recordRepository->persist($record);
+            $updateRecordCommand->handle(new UpdateRecordRequest($record), new UpdateRecordResponse());
         }
     }
 

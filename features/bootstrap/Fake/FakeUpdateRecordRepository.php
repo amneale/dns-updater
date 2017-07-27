@@ -27,6 +27,7 @@ class FakeUpdateRecordRepository implements UpdateRecordRepository
         }
 
         $this->existingRecords[] = $record;
+
         return $record;
     }
 
