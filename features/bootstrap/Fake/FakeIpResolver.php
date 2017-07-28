@@ -3,28 +3,28 @@
 namespace Fake;
 
 use DnsUpdater\Command\Service\IpResolver;
-use DnsUpdater\Ip;
+use DnsUpdater\IpAddress;
 
 class FakeIpResolver implements IpResolver
 {
     /**
-     * @var Ip
+     * @var IpAddress
      */
-    private $ip;
+    private $ipAddress;
 
     /**
-     * @return Ip
+     * @return IpAddress
      */
-    public function getIp(): Ip
+    public function getIpAddress(): IpAddress
     {
-        return $this->ip;
+        return $this->ipAddress;
     }
 
     /**
-     * @param Ip $ip
+     * @param IpAddress $ipAddress
      */
-    public function setIp(Ip $ip)
+    public function setIpAddress(IpAddress $ipAddress)
     {
-        $this->ip = $ip;
+        $this->ipAddress = $ipAddress;
     }
 }

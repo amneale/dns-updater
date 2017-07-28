@@ -6,7 +6,7 @@ use DnsUpdater\Command\Contract\UpdateRecordRequest;
 use DnsUpdater\Command\Contract\UpdateRecordResponse;
 use DnsUpdater\Command\Repository\UpdateRecordRepository;
 use DnsUpdater\Command\Service\IpResolver;
-use DnsUpdater\Ip;
+use DnsUpdater\IpAddress;
 use DnsUpdater\Record;
 use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
@@ -60,15 +60,15 @@ class UpdateRecord
         try {
             $record = $request->getRecord();
 
-            $ip = $this->ipResolver->getIp();
-            if (!$this->shouldUpdateRecord($record, $ip)) {
+            $ipAddress = $this->ipResolver->getIpAddress();
+            if (!$this->shouldUpdateRecord($record, $ipAddress)) {
                 return;
             }
 
-            $record->setData($this->ipResolver->getIp());
+            $record->setData($this->ipResolver->getIpAddress());
             $record = $this->recordRepository->persist($record);
 
-            $this->cache->set($this->getCacheKey($record), (string) $ip);
+            $this->cache->set($this->getCacheKey($record), (string) $ipAddress);
             $this->logger->info(
                 'Updated record',
                 [
@@ -87,15 +87,15 @@ class UpdateRecord
 
     /**
      * @param Record $record
-     * @param Ip $ip
+     * @param IpAddress $ipAddress
      *
      * @return bool
      */
-    private function shouldUpdateRecord(Record $record, Ip $ip): bool
+    private function shouldUpdateRecord(Record $record, IpAddress $ipAddress): bool
     {
         $cacheKey = $this->getCacheKey($record);
 
-        if ($this->cache->has($cacheKey) && $this->cache->get($cacheKey) === (string) $ip) {
+        if ($this->cache->has($cacheKey) && $this->cache->get($cacheKey) === (string) $ipAddress) {
             $this->logger->info(
                 'IP unchanged',
                 [

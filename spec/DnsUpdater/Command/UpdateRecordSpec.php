@@ -6,7 +6,7 @@ use DnsUpdater\Command\Contract\UpdateRecordRequest;
 use DnsUpdater\Command\Contract\UpdateRecordResponse;
 use DnsUpdater\Command\Repository\UpdateRecordRepository;
 use DnsUpdater\Command\Service\IpResolver;
-use DnsUpdater\Ip;
+use DnsUpdater\IpAddress;
 use DnsUpdater\Record;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -27,7 +27,7 @@ class UpdateRecordSpec extends ObjectBehavior
         Record $record,
         UpdateRecordRequest $request
     ) {
-        $ipResolver->getIp()->willReturn(new Ip(self::TEST_IP));
+        $ipResolver->getIpAddress()->willReturn(new IpAddress(self::TEST_IP));
         $recordRepository->persist($record)->willReturn($record);
         $cache->has('ip_' . self::TEST_HOST . '_' . self::TEST_DOMAIN)->willReturn(true);
         $cache->get('ip_' . self::TEST_HOST . '_' . self::TEST_DOMAIN)->willReturn(self::TEST_IP);
@@ -98,7 +98,7 @@ class UpdateRecordSpec extends ObjectBehavior
         IpResolver $ipResolver,
         LoggerInterface $logger
     ) {
-        $ipResolver->getIp()->willThrow(new \Exception('test exception'));
+        $ipResolver->getIpAddress()->willThrow(new \Exception('test exception'));
 
         $logger->error('test exception')->shouldBeCalled();
 

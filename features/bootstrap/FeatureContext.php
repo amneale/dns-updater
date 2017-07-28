@@ -5,7 +5,7 @@ use Behat\Behat\Context\Context;
 use DnsUpdater\Command\Contract\UpdateRecordRequest;
 use DnsUpdater\Command\Contract\UpdateRecordResponse;
 use DnsUpdater\Command\UpdateRecord;
-use DnsUpdater\Ip;
+use DnsUpdater\IpAddress;
 use DnsUpdater\Record;
 use Fake\FakeIpResolver;
 use Fake\FakeUpdateRecordRepository;
@@ -36,29 +36,29 @@ class FeatureContext implements Context
     }
 
     /**
-     * @Given there is an A record :host pointing at :ip
+     * @Given there is an A record :host pointing at :ipAddress
      *
      * @param string $host
-     * @param string $ip
+     * @param string $ipAddress
      */
-    public function thereIsAnARecordPointingAt(string $host, string $ip)
+    public function thereIsAnARecordPointingAt(string $host, string $ipAddress)
     {
         $this->recordRepository->setExistingRecords(
             array_merge(
                 $this->recordRepository->getExistingRecords(),
-                [new Record(self::TEST_DOMAIN, $host, Record::TYPE_ADDRESS, $ip)]
+                [new Record(self::TEST_DOMAIN, $host, Record::TYPE_ADDRESS, $ipAddress)]
             )
         );
     }
 
     /**
-     * @Given my IP resolves to :ip
+     * @Given my IP resolves to :ipAddress
      *
-     * @param string $ip
+     * @param string $ipAddress
      */
-    public function myIpResolvesTo(string $ip)
+    public function myIpResolvesTo(string $ipAddress)
     {
-        $this->ipResolver->setIp(new Ip($ip));
+        $this->ipResolver->setIpAddress(new IpAddress($ipAddress));
     }
 
     /**
@@ -82,11 +82,11 @@ class FeatureContext implements Context
      * @Then the domain A record :host should point to :ip
      *
      * @param string $host
-     * @param string $ip
+     * @param string $ipAddress
      */
-    public function theDomainARecordShouldPointTo(string $host, string $ip)
+    public function theDomainARecordShouldPointTo(string $host, string $ipAddress)
     {
-        Assert::that($this->getRecord(self::TEST_DOMAIN, $host, Record::TYPE_ADDRESS)->getData())->same($ip);
+        Assert::that($this->getRecord(self::TEST_DOMAIN, $host, Record::TYPE_ADDRESS)->getData())->same($ipAddress);
     }
 
     /**

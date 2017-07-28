@@ -35,10 +35,10 @@ final class DigitalOceanAdapter implements UpdateRecordRepository
      */
     public function persist(Record $record): Record
     {
-        $id = $this->fetchDomainId($record->getDomain(), $record->getHost());
+        $domainId = $this->fetchDomainId($record->getDomain(), $record->getHost());
 
-        null !== $id
-            ? $this->domainRecordApi->updateData($record->getDomain(), $id, (string) $record->getData())
+        null !== $domainId
+            ? $this->domainRecordApi->updateData($record->getDomain(), $domainId, (string) $record->getData())
             : $this->domainRecordApi->create(
                 $record->getDomain(), Record::TYPE_ADDRESS, $record->getHost(), $record->getData()
             );

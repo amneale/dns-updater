@@ -29,6 +29,6 @@ class CanIHazIpResolverSpec extends ObjectBehavior
         $response->getBody()->willReturn($stream);
         $stream->getContents()->willReturn(self::TEST_IP);
 
-        $this->getIp()->__toString()->shouldReturn(self::TEST_IP);
+        $this->getIpAddress()->__toString()->shouldReturn(self::TEST_IP);
     }
 }

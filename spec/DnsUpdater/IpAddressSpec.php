@@ -4,7 +4,7 @@ namespace spec\DnsUpdater;
 
 use PhpSpec\ObjectBehavior;
 
-class IpSpec extends ObjectBehavior
+class IpAddressSpec extends ObjectBehavior
 {
     const TEST_IP = '192.168.0.1';
 

@@ -3,7 +3,7 @@
 namespace DnsUpdater\Service;
 
 use DnsUpdater\Command\Service\IpResolver;
-use DnsUpdater\Ip;
+use DnsUpdater\IpAddress;
 use GuzzleHttp\ClientInterface;
 
 final class CanIHazIpResolver implements IpResolver
@@ -16,9 +16,9 @@ final class CanIHazIpResolver implements IpResolver
     private $client;
 
     /**
-     * @var Ip
+     * @var IpAddress
      */
-    private $ip;
+    private $ipAddress;
 
     /**
      * @param ClientInterface $client
@@ -31,14 +31,14 @@ final class CanIHazIpResolver implements IpResolver
     /**
      * @inheritdoc
      */
-    public function getIp(): Ip
+    public function getIpAddress(): IpAddress
     {
-        if (!isset($this->ip)) {
-            $this->ip = new Ip(
+        if (!isset($this->ipAddress)) {
+            $this->ipAddress = new IpAddress(
                 $this->client->request('get', self::URI)->getBody()->getContents()
             );
         }
 
-        return $this->ip;
+        return $this->ipAddress;
     }
 }
