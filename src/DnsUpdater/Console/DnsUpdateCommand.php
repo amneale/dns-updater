@@ -34,7 +34,7 @@ class DnsUpdateCommand extends Command
      */
     public function __construct(
         UpdateRecord $updateRecord,
-        string $domain,
+        string $domain = null,
         array $hosts
     ) {
         $this->updateRecord = $updateRecord;

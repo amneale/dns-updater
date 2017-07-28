@@ -1,6 +1,8 @@
 # Budget 
 [![Build Status](https://travis-ci.org/amneale/dns-updater.svg?branch=master)](https://travis-ci.org/amneale/dns-updater)
-[![Coverage Status](https://coveralls.io/repos/github/amneale/dns-updater/badge.svg?branch=master)](https://coveralls.io/github/amneale/dns-updater?branch=master)
+[![Test Coverage](https://codeclimate.com/github/amneale/dns-updater/badges/coverage.svg)](https://codeclimate.com/github/amneale/dns-updater/coverage)
+[![Code Climate](https://codeclimate.com/github/amneale/dns-updater/badges/gpa.svg)](https://codeclimate.com/github/amneale/dns-updater)
+[![Issue Count](https://codeclimate.com/github/amneale/dns-updater/badges/issue_count.svg)](https://codeclimate.com/github/amneale/dns-updater)
 
 ## Install
 Via Composer

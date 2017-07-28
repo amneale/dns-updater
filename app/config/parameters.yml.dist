@@ -1,7 +1,7 @@
 parameters:
     digital_ocean_access_token: ~
 
-    domain: ~
+    domain: your.domain
     hosts: []
 
     app_log_path: "var/logs/app.log"
