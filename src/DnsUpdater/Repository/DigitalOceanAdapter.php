@@ -39,11 +39,13 @@ final class DigitalOceanAdapter implements UpdateRecordRepository
 
         if ($domainId) {
             $this->domainRecordApi->updateData($record->getDomain(), $domainId, (string) $record->getData());
-        } else {
-            $this->domainRecordApi->create(
-                $record->getDomain(), Record::TYPE_ADDRESS, $record->getHost(), $record->getData()
-            );
+
+            return $record;
         }
+
+        $this->domainRecordApi->create(
+            $record->getDomain(), Record::TYPE_ADDRESS, $record->getHost(), $record->getData()
+        );
 
         return $record;
     }

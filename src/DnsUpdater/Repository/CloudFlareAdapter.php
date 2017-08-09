@@ -41,13 +41,9 @@ final class CloudFlareAdapter implements UpdateRecordRepository
         $zoneId = $this->getZoneId($record);
         $recordId = $this->fetchRecordId($zoneId, $record);
 
-        if ($recordId) {
-            $response = $this->dns->update(
-                $zoneId, $recordId, $record->getType(), $record->getHost(), $record->getData()
-            );
-        } else {
-            $response = $this->dns->create($zoneId, $record->getType(), $record->getHost(), $record->getData());
-        }
+        $response = $recordId !== null
+            ? $this->dns->update($zoneId, $recordId, $record->getType(), $record->getHost(), $record->getData())
+            : $this->dns->create($zoneId, $record->getType(), $record->getHost(), $record->getData());
 
         $this->checkResponse($response);
 
