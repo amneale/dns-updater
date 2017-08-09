@@ -1,4 +1,13 @@
 services:
+    guzzle_http.client:
+        class: GuzzleHttp\Client
+        public: false
+
+    ip_resolver:
+        class: DnsUpdater\Service\CanIHazIpResolver
+        arguments: ['@guzzle_http.client']
+        public: false
+
     digital_ocean_v2.adapter:
         class: DigitalOceanV2\Adapter\GuzzleHttpAdapter
         arguments: ['%digital_ocean_access_token%']
@@ -9,19 +18,33 @@ services:
         arguments: ['@digital_ocean_v2.adapter']
         public: false
 
-    guzzle_http.client:
-        class: GuzzleHttp\Client
-        public: false
-
-    ip_resolver:
-        class: DnsUpdater\Service\CanIHazIpResolver
-        arguments: ['@guzzle_http.client']
-        public: false
-
-    update_record_repository:
+    digital_ocean_adapter:
         class: DnsUpdater\Repository\DigitalOceanAdapter
         arguments: ['@digital_ocean_v2.api']
         public: false
+
+    cloudflare_api:
+        class: Cloudflare\Api
+        arguments: ['%cloud_flare_email%', '%cloud_flare_api_key%']
+        public: false
+
+    cloudflare_zone:
+        class: Cloudflare\Zone
+        arguments: ['@cloudflare_api']
+        public: false
+
+    cloudflare_zone_dns:
+        class: Cloudflare\Zone\Dns
+        arguments: ['@cloudflare_zone']
+        public: false
+
+    cloud_flare_adapter:
+        class: DnsUpdater\Repository\CloudFlareAdapter
+        arguments: ['@cloudflare_zone', '@cloudflare_zone_dns']
+        public: false
+
+    update_record_repository:
+        alias: digital_ocean_adapter
 
     cache:
         class: Symfony\Component\Cache\Simple\FilesystemCache

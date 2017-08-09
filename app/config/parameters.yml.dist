@@ -1,6 +1,9 @@
 parameters:
     digital_ocean_access_token: ~
 
+    cloud_flare_email: ~
+    cloud_flare_api_key: ~
+
     domain: your.domain
     hosts: []
 

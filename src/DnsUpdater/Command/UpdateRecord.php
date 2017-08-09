@@ -65,7 +65,7 @@ class UpdateRecord
                 return;
             }
 
-            $record->setData($this->ipResolver->getIpAddress());
+            $record->setData($ipAddress);
             $record = $this->recordRepository->persist($record);
 
             $this->cache->set($this->getCacheKey($record), (string) $ipAddress);
@@ -102,7 +102,7 @@ class UpdateRecord
                     'domain' => $record->getDomain(),
                     'host' => $record->getHost(),
                     'type' => $record->getType(),
-                    'data' => $record->getData(),
+                    'data' => (string) $ipAddress,
                 ]
             );
 
