@@ -2,6 +2,8 @@
 <?php
 
 use DnsUpdater\Console\Application;
+use DnsUpdater\IpResolver\CanIHazIpResolver;
+use GuzzleHttp\Client;
 
 require __DIR__ . '/../vendor/autoload.php';
 
