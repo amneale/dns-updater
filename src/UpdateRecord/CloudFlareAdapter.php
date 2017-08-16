@@ -8,7 +8,7 @@ use DnsUpdater\Record;
 
 final class CloudFlareAdapter implements UpdateRecord
 {
-    const NAME = 'CloudFlare';
+    const NAME = 'cloudflare';
     const STATUS_ACTIVE = 'active';
 
     /**

@@ -9,7 +9,7 @@ use DnsUpdater\Record;
 
 final class DigitalOceanAdapter implements UpdateRecord
 {
-    const NAME = 'DigitalOcean';
+    const NAME = 'digitalocean';
 
     /**
      * @var DomainRecord

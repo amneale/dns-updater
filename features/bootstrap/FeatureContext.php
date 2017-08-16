@@ -2,7 +2,9 @@
 
 use Assert\Assert;
 use Behat\Behat\Context\Context;
+use DnsUpdater\IpAddress;
 use DnsUpdater\Record;
+use Fake\FakeIpResolver;
 use Fake\FakeUpdateRecord;
 
 /**
@@ -15,9 +17,15 @@ class FeatureContext implements Context
      */
     private $recordRepository;
 
+    /**
+     * @var FakeIpResolver
+     */
+    private $ipResolver;
+
     public function __construct()
     {
         $this->recordRepository = new FakeUpdateRecord();
+        $this->ipResolver = new FakeIpResolver();
     }
 
     /**
@@ -45,17 +53,28 @@ class FeatureContext implements Context
         );
     }
 
+    /**
+     * @Given my IP resolves as :ip
+     *
+     * @param string $ip
+     */
+    public function myIpResolvesAs(string $ip)
+    {
+        $this->ipResolver->setIpAddress(new IpAddress($ip));
+    }
 
     /**
-     * @When I update the A record :name for domain :domain with the value :value
+     * @When /^I update the A record "(.*?)" for domain "(.*?)"(?: with the value "(.*?)")?$/
      *
      * @param string $name
      * @param string $domain
      * @param string $value
      */
-    public function iUpdateTheARecordWithTheValue(string $name, string $domain, string $value)
+    public function iUpdateTheARecordWithTheValue(string $name, string $domain, string $value = null)
     {
-        // TODO leverage command?
+        // TODO leverage command to do this?
+        $value = $value ?? (string) $this->ipResolver->getIpAddress();
+
         $this->recordRepository->persist(
             new Record($domain, $name, Record::TYPE_ADDRESS, $value)
         );

@@ -12,3 +12,9 @@ Feature: Update DNS
     Given there is the A record "my" for domain "test.domain" with the value "123.45.67.89"
     When I update the A record "my" for domain "test.domain" with the value "111.11.11.11"
     Then there should exist the A record "my" for domain "test.domain" with the value "111.11.11.11"
+
+  Scenario: Automatically resolving host IP
+    Given there is the A record "my" for domain "test.domain" with the value "123.45.67.89"
+    And my IP resolves as "111.11.11.11"
+    When I update the A record "my" for domain "test.domain"
+    Then there should exist the A record "my" for domain "test.domain" with the value "111.11.11.11"
