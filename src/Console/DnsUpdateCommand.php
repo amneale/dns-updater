@@ -43,7 +43,7 @@ class DnsUpdateCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $io = new SymfonyStyle($input, $output);
+        $inputOutput = new SymfonyStyle($input, $output);
         $ipResolver = new CanIHazIpResolver(new Client());
 
         $record = new Record(
@@ -53,10 +53,10 @@ class DnsUpdateCommand extends Command
             $input->getOption('value') ?? $ipResolver->getIpAddress()
         );
 
-        $adapter = $this->getAdapter($input->getOption('adapter'), $input->getOption('params'), $io);
+        $adapter = $this->getAdapter($input->getOption('adapter'), $input->getOption('params'), $inputOutput);
         $adapter->persist($record);
 
-        $io->table(
+        $inputOutput->table(
             ['domain', 'name', 'type', 'value'],
             [
                 [
@@ -69,15 +69,15 @@ class DnsUpdateCommand extends Command
         );
     }
 
-    private function getAdapter(string $adapter = null, array $params, SymfonyStyle $io)
+    private function getAdapter(string $adapter = null, array $params, SymfonyStyle $inputOutput)
     {
-        $adapterName = $adapter ?? $io->askQuestion(new AdapterChoice());
+        $adapterName = $adapter ?? $inputOutput->askQuestion(new AdapterChoice());
         $adapterName = strtolower($adapterName);
 
         if (empty($params)) {
             $questionGenerator = new AdapterQuestionProvider();
             foreach ($questionGenerator->getQuestionsFor($adapterName) as $question) {
-                $params[] = $io->askQuestion($question);
+                $params[] = $inputOutput->askQuestion($question);
             }
         }
 
