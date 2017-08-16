@@ -2,110 +2,96 @@
 
 use Assert\Assert;
 use Behat\Behat\Context\Context;
-use DnsUpdater\Command\Contract\UpdateRecordRequest;
-use DnsUpdater\Command\Contract\UpdateRecordResponse;
-use DnsUpdater\Command\UpdateRecord;
 use DnsUpdater\IpAddress;
 use DnsUpdater\Record;
 use Fake\FakeIpResolver;
-use Fake\FakeUpdateRecordRepository;
-use Psr\Log\NullLogger;
-use Symfony\Component\Cache\Simple\NullCache;
+use Fake\FakeUpdateRecord;
 
 /**
  * Defines application features from the specific context.
  */
 class FeatureContext implements Context
 {
-    const TEST_DOMAIN = 'foo.domain';
+    /**
+     * @var FakeUpdateRecord
+     */
+    private $recordRepository;
 
     /**
      * @var FakeIpResolver
      */
     private $ipResolver;
 
-    /**
-     * @var FakeUpdateRecordRepository
-     */
-    private $recordRepository;
-
     public function __construct()
     {
+        $this->recordRepository = new FakeUpdateRecord();
         $this->ipResolver = new FakeIpResolver();
-        $this->recordRepository = new FakeUpdateRecordRepository();
     }
 
     /**
-     * @Given there is an A record :host pointing at :ipAddress
-     *
-     * @param string $host
-     * @param string $ipAddress
+     * @Given there are no existing domain records
      */
-    public function thereIsAnARecordPointingAt(string $host, string $ipAddress)
+    public function thereAreNoExistingDomainRecords()
+    {
+        $this->recordRepository->setExistingRecords([]);
+    }
+
+    /**
+     * @Given there is the A record :name for domain :domain with the value :value
+     *
+     * @param string $name
+     * @param string $domain
+     * @param string $value
+     */
+    public function thereIsTheARecordForDomainWithTheValue(string $name, string $domain, string $value)
     {
         $this->recordRepository->setExistingRecords(
             array_merge(
                 $this->recordRepository->getExistingRecords(),
-                [new Record(self::TEST_DOMAIN, $host, Record::TYPE_ADDRESS, $ipAddress)]
+                [new Record($name, $domain, Record::TYPE_ADDRESS, $value)]
             )
         );
     }
 
     /**
-     * @Given my IP resolves to :ipAddress
+     * @Given my IP resolves as :ip
      *
-     * @param string $ipAddress
+     * @param string $ip
      */
-    public function myIpResolvesTo(string $ipAddress)
+    public function myIpResolvesAs(string $ip)
     {
-        $this->ipResolver->setIpAddress(new IpAddress($ipAddress));
+        $this->ipResolver->setIpAddress(new IpAddress($ip));
     }
 
     /**
-     * @When I update DNS records
-     */
-    public function iUpdateDnsRecords()
-    {
-        $updateRecordCommand = new UpdateRecord(
-            $this->ipResolver,
-            $this->recordRepository,
-            new NullCache(),
-            new NullLogger()
-        );
-
-        foreach ($this->recordRepository->getExistingRecords() as $record) {
-            $updateRecordCommand->handle(new UpdateRecordRequest($record), new UpdateRecordResponse());
-        }
-    }
-
-    /**
-     * @Then the domain A record :host should point to :ip
+     * @When /^I update the A record "(.*?)" for domain "(.*?)"(?: with the value "(.*?)")?$/
      *
-     * @param string $host
-     * @param string $ipAddress
-     */
-    public function theDomainARecordShouldPointTo(string $host, string $ipAddress)
-    {
-        Assert::that($this->getRecord(self::TEST_DOMAIN, $host, Record::TYPE_ADDRESS)->getData())->same($ipAddress);
-    }
-
-    /**
+     * @param string $name
      * @param string $domain
-     * @param string $host
-     * @param string $type
-     *
-     * @return Record
+     * @param string $value
      */
-    private function getRecord(string $domain, string $host, string $type): Record
+    public function iUpdateTheARecordWithTheValue(string $name, string $domain, string $value = null)
     {
-        $searchRecord = new Record($domain, $host, $type);
+        // TODO leverage command to do this?
+        $value = $value ?? (string) $this->ipResolver->getIpAddress();
 
-        foreach ($this->recordRepository->getExistingRecords() as $record) {
-            if ($record->isSame($searchRecord)) {
-                return $record;
-            }
-        }
+        $this->recordRepository->persist(
+            new Record($domain, $name, Record::TYPE_ADDRESS, $value)
+        );
+    }
 
-        throw new InvalidArgumentException("Record not found for $host.$domain ($type)");
+    /**
+     * @Then there should exist the A record :name for domain :domain with the value :value
+     *
+     * @param string $name
+     * @param string $domain
+     * @param string $value
+     */
+    public function thereShouldExistTheDomainARecordWithTheValue(string $name, string $domain, string $value)
+    {
+        $record = $this->recordRepository->find(new Record($domain, $name, Record::TYPE_ADDRESS, $value));
+
+        Assert::that($record)->notNull();
+        Assert::that($record->getValue())->same($value);
     }
 }

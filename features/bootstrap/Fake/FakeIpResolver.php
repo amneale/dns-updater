@@ -2,8 +2,8 @@
 
 namespace Fake;
 
-use DnsUpdater\Command\Service\IpResolver;
 use DnsUpdater\IpAddress;
+use DnsUpdater\IpResolver\IpResolver;
 
 class FakeIpResolver implements IpResolver
 {
