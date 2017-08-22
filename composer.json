@@ -1,7 +1,8 @@
 {
     "name": "amneale/dns-updater",
     "description": "DNS updater",
-    "type": "project",
+    "type": "library",
+    "license": "MIT",
     "authors": [
         {
             "name": "Adam Neale",
