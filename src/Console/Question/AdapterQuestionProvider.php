@@ -3,11 +3,11 @@
 namespace DnsUpdater\Console\Question;
 
 use Assert\Assert;
+use DnsUpdater\Adapter\CloudFlareAdapter;
+use DnsUpdater\Adapter\DigitalOceanAdapter;
 use DnsUpdater\Console\Question\CloudFlare\ApiKeyQuestion;
 use DnsUpdater\Console\Question\CloudFlare\EmailQuestion;
 use DnsUpdater\Console\Question\DigitalOcean\AccessTokenQuestion;
-use DnsUpdater\UpdateRecord\CloudFlareAdapter;
-use DnsUpdater\UpdateRecord\DigitalOceanAdapter;
 use Symfony\Component\Console\Question\Question;
 
 class AdapterQuestionProvider

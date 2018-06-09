@@ -3,7 +3,7 @@
 
 use DnsUpdater\Console\Application;
 use DnsUpdater\IpResolver\CanIHazIpResolver;
-use DnsUpdater\UpdateRecord\AdapterFactory;
+use DnsUpdater\Adapter\AdapterFactory;
 use GuzzleHttp\Client;
 
 require __DIR__ . '/../vendor/autoload.php';

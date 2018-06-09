@@ -1,6 +1,6 @@
 <?php
 
-namespace DnsUpdater\UpdateRecord;
+namespace DnsUpdater\Adapter;
 
 use Cloudflare\Api;
 use Cloudflare\Zone;
@@ -14,9 +14,9 @@ class AdapterFactory
      * @param string $adapter
      * @param array $params
      *
-     * @return UpdateRecord
+     * @return Adapter
      */
-    public function build(string $adapter, array $params): UpdateRecord
+    public function build(string $adapter, array $params): Adapter
     {
         switch ($adapter) {
             case DigitalOceanAdapter::NAME:

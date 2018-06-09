@@ -2,12 +2,13 @@
 
 namespace DnsUpdater\Console;
 
+use DnsUpdater\Adapter\Adapter;
+use DnsUpdater\Adapter\AdapterFactory;
 use DnsUpdater\Console\Question\AdapterChoice;
 use DnsUpdater\Console\Question\AdapterQuestionProvider;
+use DnsUpdater\DnsUpdater;
 use DnsUpdater\IpResolver\IpResolver;
-use DnsUpdater\Record;
-use DnsUpdater\UpdateRecord\AdapterFactory;
-use DnsUpdater\UpdateRecord\UpdateRecord;
+use DnsUpdater\Value\Record;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -75,8 +76,10 @@ class DnsUpdateCommand extends Command
             $input->getOption('value') ?? $this->ipResolver->getIpAddress()
         );
 
-        $adapter = $this->getAdapter($input->getOption('adapter'), $input->getOption('params'), $inputOutput);
-        $adapter->persist($record);
+        $dnsUpdater = new DnsUpdater(
+            $this->getAdapter($input->getOption('adapter'), $input->getOption('params'), $inputOutput)
+        );
+        $dnsUpdater->persist($record);
 
         $inputOutput->table(
             ['domain', 'name', 'type', 'value'],
@@ -96,9 +99,9 @@ class DnsUpdateCommand extends Command
      * @param array $params
      * @param SymfonyStyle $inputOutput
      *
-     * @return UpdateRecord
+     * @return Adapter
      */
-    private function getAdapter(string $adapter = null, array $params, SymfonyStyle $inputOutput): UpdateRecord
+    private function getAdapter(string $adapter = null, array $params, SymfonyStyle $inputOutput): Adapter
     {
         $adapterName = $adapter ?? $inputOutput->askQuestion(new AdapterChoice());
         $adapterName = strtolower($adapterName);

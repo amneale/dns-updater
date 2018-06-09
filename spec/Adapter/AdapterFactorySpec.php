@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\DnsUpdater\UpdateRecord;
+namespace spec\DnsUpdater\Adapter;
 
-use DnsUpdater\UpdateRecord\CloudFlareAdapter;
-use DnsUpdater\UpdateRecord\DigitalOceanAdapter;
+use DnsUpdater\Adapter\CloudFlareAdapter;
+use DnsUpdater\Adapter\DigitalOceanAdapter;
 use PhpSpec\ObjectBehavior;
 
 class AdapterFactorySpec extends ObjectBehavior

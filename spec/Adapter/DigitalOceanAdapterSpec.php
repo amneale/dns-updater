@@ -1,12 +1,12 @@
 <?php
 
-namespace spec\DnsUpdater\UpdateRecord;
+namespace spec\DnsUpdater\Adapter;
 
 use DigitalOceanV2\Api\DomainRecord as DomainRecordApi;
 use DigitalOceanV2\DigitalOceanV2;
 use DigitalOceanV2\Entity\DomainRecord;
-use DnsUpdater\Record;
-use DnsUpdater\UpdateRecord\UpdateRecord;
+use DnsUpdater\Adapter\Adapter;
+use DnsUpdater\Value\Record;
 use PhpSpec\ObjectBehavior;
 
 class DigitalOceanAdapterSpec extends ObjectBehavior
@@ -14,6 +14,7 @@ class DigitalOceanAdapterSpec extends ObjectBehavior
     const TEST_DOMAIN = 'test.domain';
     const TEST_HOST = '@';
     const TEST_DATA = '123.45.67.89';
+    const TEST_ID = 123;
 
     public function let(DigitalOceanV2 $digitalOceanApi, DomainRecordApi $domainRecordApi, Record $record): void
     {
@@ -26,9 +27,9 @@ class DigitalOceanAdapterSpec extends ObjectBehavior
         $this->beConstructedWith($digitalOceanApi);
     }
 
-    public function it_implements_record_persister_adapter(): void
+    public function it_implements_adapter(): void
     {
-        $this->shouldImplement(UpdateRecord::class);
+        $this->shouldImplement(Adapter::class);
     }
 
     public function it_creates_a_new_record(DomainRecordApi $domainRecordApi, Record $record): void
@@ -37,21 +38,20 @@ class DigitalOceanAdapterSpec extends ObjectBehavior
         $domainRecordApi->create(self::TEST_DOMAIN, Record::TYPE_ADDRESS, self::TEST_HOST, self::TEST_DATA)
             ->shouldBeCalled();
 
-        $this->persist($record)->shouldReturn($record);
+        $this->persist($record);
     }
 
     public function it_updates_an_existing_record(DomainRecordApi $domainRecordApi, Record $record): void
     {
-        $testId = 123;
         $domainRecordApi->getAll(self::TEST_DOMAIN)->willReturn([
             new DomainRecord([
-                'id' => $testId,
+                'id' => self::TEST_ID,
                 'type' => Record::TYPE_ADDRESS,
                 'name' => self::TEST_HOST,
             ])
         ]);
-        $domainRecordApi->updateData(self::TEST_DOMAIN, $testId, self::TEST_DATA)->shouldBeCalled();
+        $domainRecordApi->updateData(self::TEST_DOMAIN, self::TEST_ID, self::TEST_DATA)->shouldBeCalled();
 
-        $this->persist($record)->shouldReturn($record);
+        $this->persist($record);
     }
 }

@@ -2,8 +2,8 @@
 
 namespace spec\DnsUpdater\Console;
 
+use DnsUpdater\Adapter\AdapterFactory;
 use DnsUpdater\IpResolver\IpResolver;
-use DnsUpdater\UpdateRecord\AdapterFactory;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Console\Command\Command;
 

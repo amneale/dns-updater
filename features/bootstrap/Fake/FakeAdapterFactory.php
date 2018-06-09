@@ -2,20 +2,20 @@
 
 namespace Fake;
 
-use DnsUpdater\UpdateRecord\AdapterFactory;
-use DnsUpdater\UpdateRecord\UpdateRecord;
+use DnsUpdater\Adapter\Adapter;
+use DnsUpdater\Adapter\AdapterFactory;
 
 class FakeAdapterFactory extends AdapterFactory
 {
     /**
-     * @var UpdateRecord
+     * @var Adapter
      */
     private $adapter;
 
     /**
-     * @param UpdateRecord $adapter
+     * @param Adapter $adapter
      */
-    public function __construct(UpdateRecord $adapter)
+    public function __construct(Adapter $adapter)
     {
         $this->adapter = $adapter;
     }
@@ -24,9 +24,9 @@ class FakeAdapterFactory extends AdapterFactory
      * @param string $adapter
      * @param array $params
      *
-     * @return UpdateRecord
+     * @return Adapter
      */
-    public function build(string $adapter, array $params): UpdateRecord
+    public function build(string $adapter, array $params): Adapter
     {
         return $this->adapter;
     }

@@ -2,11 +2,11 @@
 
 namespace spec\DnsUpdater\Console\Question;
 
+use DnsUpdater\Adapter\CloudFlareAdapter;
+use DnsUpdater\Adapter\DigitalOceanAdapter;
 use DnsUpdater\Console\Question\CloudFlare\ApiKeyQuestion;
 use DnsUpdater\Console\Question\CloudFlare\EmailQuestion;
 use DnsUpdater\Console\Question\DigitalOcean\AccessTokenQuestion;
-use DnsUpdater\UpdateRecord\CloudFlareAdapter;
-use DnsUpdater\UpdateRecord\DigitalOceanAdapter;
 use PhpSpec\ObjectBehavior;
 
 class AdapterQuestionProviderSpec extends ObjectBehavior

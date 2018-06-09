@@ -1,6 +1,6 @@
 <?php
 
-namespace DnsUpdater;
+namespace DnsUpdater\Value;
 
 use Assert\Assert;
 

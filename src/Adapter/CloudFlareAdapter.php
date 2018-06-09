@@ -1,12 +1,12 @@
 <?php
 
-namespace DnsUpdater\UpdateRecord;
+namespace DnsUpdater\Adapter;
 
 use Cloudflare\Zone;
 use Cloudflare\Zone\Dns;
-use DnsUpdater\Record;
+use DnsUpdater\Value\Record;
 
-final class CloudFlareAdapter implements UpdateRecord
+final class CloudFlareAdapter implements Adapter
 {
     const NAME = 'cloudflare';
     const STATUS_ACTIVE = 'active';
@@ -32,11 +32,9 @@ final class CloudFlareAdapter implements UpdateRecord
     }
 
     /**
-     * @param Record $record
-     *
-     * @return Record
+     * @inheritdoc
      */
-    public function persist(Record $record): Record
+    public function persist(Record $record): void
     {
         $zoneId = $this->getZoneId($record);
         $recordId = $this->fetchRecordId($zoneId, $record);
@@ -46,12 +44,10 @@ final class CloudFlareAdapter implements UpdateRecord
             : $this->dns->create($zoneId, $record->getType(), $record->getName(), $record->getValue());
 
         $this->checkResponse($response);
-
-        return $record;
     }
 
     /**
-     * @param Record $record
+     * @param \DnsUpdater\Value\Record $record
      *
      * @return string
      * @throws \Exception

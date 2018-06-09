@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\DnsUpdater;
+namespace spec\DnsUpdater\Value;
 
 use PhpSpec\ObjectBehavior;
 

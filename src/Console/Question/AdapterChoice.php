@@ -2,8 +2,8 @@
 
 namespace DnsUpdater\Console\Question;
 
-use DnsUpdater\UpdateRecord\CloudFlareAdapter;
-use DnsUpdater\UpdateRecord\DigitalOceanAdapter;
+use DnsUpdater\Adapter\CloudFlareAdapter;
+use DnsUpdater\Adapter\DigitalOceanAdapter;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 
 final class AdapterChoice extends ChoiceQuestion

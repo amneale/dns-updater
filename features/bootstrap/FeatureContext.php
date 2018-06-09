@@ -3,11 +3,11 @@
 use Assert\Assert;
 use Behat\Behat\Context\Context;
 use DnsUpdater\Console\DnsUpdateCommand;
-use DnsUpdater\IpAddress;
-use DnsUpdater\Record;
+use DnsUpdater\Value\IpAddress;
+use DnsUpdater\Value\Record;
+use Fake\FakeAdapter;
 use Fake\FakeAdapterFactory;
 use Fake\FakeIpResolver;
-use Fake\FakeUpdateRecord;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 
@@ -17,9 +17,9 @@ use Symfony\Component\Console\Output\NullOutput;
 class FeatureContext implements Context
 {
     /**
-     * @var FakeUpdateRecord
+     * @var FakeAdapter
      */
-    private $recordRepository;
+    private $adapter;
 
     /**
      * @var FakeIpResolver
@@ -33,10 +33,10 @@ class FeatureContext implements Context
 
     public function __construct()
     {
-        $this->recordRepository = new FakeUpdateRecord();
+        $this->adapter = new FakeAdapter();
         $this->ipResolver = new FakeIpResolver();
 
-        $this->command = new DnsUpdateCommand($this->ipResolver, new FakeAdapterFactory($this->recordRepository));
+        $this->command = new DnsUpdateCommand($this->ipResolver, new FakeAdapterFactory($this->adapter));
     }
 
     /**
@@ -44,7 +44,7 @@ class FeatureContext implements Context
      */
     public function thereAreNoExistingDomainRecords(): void
     {
-        $this->recordRepository->existingRecords = [];
+        $this->adapter->existingRecords = [];
     }
 
     /**
@@ -56,8 +56,8 @@ class FeatureContext implements Context
      */
     public function thereIsTheARecordForDomainWithTheValue(string $name, string $domain, string $value): void
     {
-        $this->recordRepository->existingRecords = array_merge(
-            $this->recordRepository->existingRecords,
+        $this->adapter->existingRecords = array_merge(
+            $this->adapter->existingRecords,
             [new Record($name, $domain, Record::TYPE_ADDRESS, $value)]
         );
     }
@@ -106,19 +106,19 @@ class FeatureContext implements Context
      */
     public function thereShouldExistTheDomainARecordWithTheValue(string $name, string $domain, string $value): void
     {
-        $record = $this->findRecord($this->recordRepository->existingRecords, $domain, $name, Record::TYPE_ADDRESS);
+        $record = $this->findRecord($this->adapter->existingRecords, $domain, $name, Record::TYPE_ADDRESS);
 
         Assert::that($record)->notNull();
         Assert::that($record->getValue())->same($value);
     }
 
     /**
-     * @param Record[] $records
+     * @param \DnsUpdater\Value\Record[] $records
      * @param string $domain
      * @param string $name
      * @param string $type
      *
-     * @return Record|null
+     * @return \DnsUpdater\Value\Record|null
      */
     private function findRecord(array $records, string $domain, string $name, string $type): ?Record
     {

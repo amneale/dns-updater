@@ -1,8 +1,8 @@
 <?php
 
-namespace spec\DnsUpdater;
+namespace spec\DnsUpdater\Value;
 
-use DnsUpdater\Record;
+use DnsUpdater\Value\Record;
 use PhpSpec\ObjectBehavior;
 
 class RecordSpec extends ObjectBehavior

@@ -2,13 +2,13 @@
 
 namespace Fake;
 
-use DnsUpdater\IpAddress;
 use DnsUpdater\IpResolver\IpResolver;
+use DnsUpdater\Value\IpAddress;
 
 class FakeIpResolver implements IpResolver
 {
     /**
-     * @var IpAddress
+     * @var \DnsUpdater\Value\IpAddress
      */
     public $ipAddress;
 

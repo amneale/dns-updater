@@ -2,12 +2,12 @@
 
 namespace DnsUpdater\IpResolver;
 
-use DnsUpdater\IpAddress;
+use DnsUpdater\Value\IpAddress;
 
 interface IpResolver
 {
     /**
-     * @return IpAddress
+     * @return \DnsUpdater\Value\IpAddress
      */
     public function getIpAddress(): IpAddress;
 }

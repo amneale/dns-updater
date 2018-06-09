@@ -2,10 +2,10 @@
 
 namespace Fake;
 
-use DnsUpdater\Record;
-use DnsUpdater\UpdateRecord\UpdateRecord;
+use DnsUpdater\Adapter\Adapter;
+use DnsUpdater\Value\Record;
 
-class FakeUpdateRecord implements UpdateRecord
+class FakeAdapter implements Adapter
 {
     /**
      * @var Record[]
@@ -15,7 +15,7 @@ class FakeUpdateRecord implements UpdateRecord
     /**
      * @inheritdoc
      */
-    public function persist(Record $record): Record
+    public function persist(Record $record): void
     {
         foreach ($this->existingRecords as $key => $existingRecord) {
             if (
@@ -25,12 +25,10 @@ class FakeUpdateRecord implements UpdateRecord
             ) {
                 $this->existingRecords[$key] = $record;
 
-                return $record;
+                return;
             }
         }
 
         $this->existingRecords[] = $record;
-
-        return $record;
     }
 }

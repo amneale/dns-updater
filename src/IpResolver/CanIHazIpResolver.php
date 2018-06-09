@@ -2,7 +2,7 @@
 
 namespace DnsUpdater\IpResolver;
 
-use DnsUpdater\IpAddress;
+use DnsUpdater\Value\IpAddress;
 use GuzzleHttp\ClientInterface;
 
 final class CanIHazIpResolver implements IpResolver

@@ -2,8 +2,8 @@
 
 namespace DnsUpdater\Console;
 
+use DnsUpdater\Adapter\AdapterFactory;
 use DnsUpdater\IpResolver\IpResolver;
-use DnsUpdater\UpdateRecord\AdapterFactory;
 use Symfony\Component\Console\Application as BaseApplication;
 
 final class Application extends BaseApplication
