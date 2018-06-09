@@ -41,7 +41,7 @@ final class CloudFlareAdapter implements UpdateRecord
         $zoneId = $this->getZoneId($record);
         $recordId = $this->fetchRecordId($zoneId, $record);
 
-        $response = $recordId !== null
+        $response = null !== $recordId
             ? $this->dns->update($zoneId, $recordId, $record->getType(), $record->getName(), $record->getValue())
             : $this->dns->create($zoneId, $record->getType(), $record->getName(), $record->getValue());
 
@@ -89,7 +89,7 @@ final class CloudFlareAdapter implements UpdateRecord
      */
     private function getNormalisedRecordName(Record $record): string
     {
-        return $record->getName() === '@'
+        return '@' === $record->getName()
             ? $record->getDomain()
             : $record->getName() . '.' . $record->getDomain();
     }
@@ -97,10 +97,10 @@ final class CloudFlareAdapter implements UpdateRecord
     /**
      * @param \stdClass $response
      */
-    private function checkResponse(\stdClass $response)
+    private function checkResponse(\stdClass $response): void
     {
         if (!$response->success) {
-            $error = $response->error !== ''
+            $error = '' !== $response->error
                 ? $response->error
                 : ($response->errors[0]->message ?? 'Unexpected runtime error');
 

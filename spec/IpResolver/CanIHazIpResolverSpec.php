@@ -13,17 +13,17 @@ class CanIHazIpResolverSpec extends ObjectBehavior
 {
     const TEST_IP = '192.168.0.1';
 
-    function let(ClientInterface $client)
+    public function let(ClientInterface $client): void
     {
         $this->beConstructedWith($client);
     }
 
-    function it_implements_ip_resolver()
+    public function it_implements_ip_resolver(): void
     {
         $this->shouldImplement(IpResolver::class);
     }
 
-    function it_gets_an_ip(ClientInterface $client, ResponseInterface $response, StreamInterface $stream)
+    public function it_gets_an_ip(ClientInterface $client, ResponseInterface $response, StreamInterface $stream): void
     {
         $client->request('get', CanIHazIpResolver::URI)->willReturn($response);
         $response->getBody()->willReturn($stream);

@@ -17,7 +17,7 @@ class IpAddress
     public function __construct(string $ipAddress)
     {
         $ipAddress = trim($ipAddress);
-        Assert::that($ipAddress)->regex('/^(?:\d{1,3}\.){3}\d{1,3}$/', "Invalid IP");
+        Assert::that($ipAddress)->regex('/^(?:\d{1,3}\.){3}\d{1,3}$/', 'Invalid IP');
 
         $this->ipAddress = $ipAddress;
     }

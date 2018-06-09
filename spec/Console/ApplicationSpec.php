@@ -8,7 +8,7 @@ use Symfony\Component\Console\Application;
 
 class ApplicationSpec extends ObjectBehavior
 {
-    function it_extends_base_application(UpdateRecord $recordRepository)
+    public function it_extends_base_application(UpdateRecord $recordRepository): void
     {
         $this->beConstructedWith($recordRepository);
         $this->shouldHaveType(Application::class);

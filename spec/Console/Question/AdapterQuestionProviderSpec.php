@@ -11,12 +11,12 @@ use PhpSpec\ObjectBehavior;
 
 class AdapterQuestionProviderSpec extends ObjectBehavior
 {
-    function it_gets_digital_ocean_adapter_questions()
+    public function it_gets_digital_ocean_adapter_questions(): void
     {
         $this->getQuestionsFor(DigitalOceanAdapter::NAME)->shouldBeLike([new AccessTokenQuestion()]);
     }
 
-    function it_gets_cloud_flare_adapter_questions()
+    public function it_gets_cloud_flare_adapter_questions(): void
     {
         $this->getQuestionsFor(CloudFlareAdapter::NAME)->shouldBeLike(
             [
@@ -26,7 +26,7 @@ class AdapterQuestionProviderSpec extends ObjectBehavior
         );
     }
 
-    function it_throws_exception_for_unavailable_adapter()
+    public function it_throws_exception_for_unavailable_adapter(): void
     {
         $this->shouldThrow(\InvalidArgumentException::class)->during('getQuestionsFor', ['foobar']);
     }

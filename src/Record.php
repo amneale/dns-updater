@@ -2,8 +2,6 @@
 
 namespace DnsUpdater;
 
-use Assert\Assert;
-
 class Record
 {
     const TYPE_ADDRESS = 'A';
@@ -26,8 +24,7 @@ class Record
     /**
      * @var string
      */
-    private $value
-    ;
+    private $value;
 
     /**
      * @param string $domain
@@ -80,7 +77,7 @@ class Record
      *
      * @return bool
      */
-    public function isSame(Record $record)
+    public function isSame(Record $record): bool
     {
         return $this->domain === $record->getDomain()
             && $this->name === $record->getName()

@@ -31,7 +31,7 @@ class FeatureContext implements Context
     /**
      * @Given there are no existing domain records
      */
-    public function thereAreNoExistingDomainRecords()
+    public function thereAreNoExistingDomainRecords(): void
     {
         $this->recordRepository->setExistingRecords([]);
     }
@@ -43,7 +43,7 @@ class FeatureContext implements Context
      * @param string $domain
      * @param string $value
      */
-    public function thereIsTheARecordForDomainWithTheValue(string $name, string $domain, string $value)
+    public function thereIsTheARecordForDomainWithTheValue(string $name, string $domain, string $value): void
     {
         $this->recordRepository->setExistingRecords(
             array_merge(
@@ -58,7 +58,7 @@ class FeatureContext implements Context
      *
      * @param string $ip
      */
-    public function myIpResolvesAs(string $ip)
+    public function myIpResolvesAs(string $ip): void
     {
         $this->ipResolver->setIpAddress(new IpAddress($ip));
     }
@@ -70,7 +70,7 @@ class FeatureContext implements Context
      * @param string $domain
      * @param string $value
      */
-    public function iUpdateTheARecordWithTheValue(string $name, string $domain, string $value = null)
+    public function iUpdateTheARecordWithTheValue(string $name, string $domain, string $value = null): void
     {
         // TODO leverage command to do this?
         $value = $value ?? (string) $this->ipResolver->getIpAddress();
@@ -87,7 +87,7 @@ class FeatureContext implements Context
      * @param string $domain
      * @param string $value
      */
-    public function thereShouldExistTheDomainARecordWithTheValue(string $name, string $domain, string $value)
+    public function thereShouldExistTheDomainARecordWithTheValue(string $name, string $domain, string $value): void
     {
         $record = $this->recordRepository->find(new Record($domain, $name, Record::TYPE_ADDRESS, $value));
 

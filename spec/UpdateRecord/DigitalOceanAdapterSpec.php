@@ -15,7 +15,7 @@ class DigitalOceanAdapterSpec extends ObjectBehavior
     const TEST_HOST = '@';
     const TEST_DATA = '123.45.67.89';
 
-    function let(DigitalOceanV2 $digitalOceanApi, DomainRecordApi $domainRecordApi, Record $record)
+    public function let(DigitalOceanV2 $digitalOceanApi, DomainRecordApi $domainRecordApi, Record $record): void
     {
         $digitalOceanApi->domainRecord()->willReturn($domainRecordApi);
 
@@ -26,12 +26,12 @@ class DigitalOceanAdapterSpec extends ObjectBehavior
         $this->beConstructedWith($digitalOceanApi);
     }
 
-    function it_implements_record_persister_adapter()
+    public function it_implements_record_persister_adapter(): void
     {
         $this->shouldImplement(UpdateRecord::class);
     }
 
-    function it_creates_a_new_record(DomainRecordApi $domainRecordApi, Record $record)
+    public function it_creates_a_new_record(DomainRecordApi $domainRecordApi, Record $record): void
     {
         $domainRecordApi->getAll(self::TEST_DOMAIN)->willReturn([]);
         $domainRecordApi->create(self::TEST_DOMAIN, Record::TYPE_ADDRESS, self::TEST_HOST, self::TEST_DATA)
@@ -40,7 +40,7 @@ class DigitalOceanAdapterSpec extends ObjectBehavior
         $this->persist($record)->shouldReturn($record);
     }
 
-    function it_updates_an_existing_record(DomainRecordApi $domainRecordApi, Record $record)
+    public function it_updates_an_existing_record(DomainRecordApi $domainRecordApi, Record $record): void
     {
         $testId = 123;
         $domainRecordApi->getAll(self::TEST_DOMAIN)->willReturn([

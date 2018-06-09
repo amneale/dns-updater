@@ -7,6 +7,7 @@ use DnsUpdater\Console\Question\AdapterQuestionProvider;
 use DnsUpdater\IpResolver\CanIHazIpResolver;
 use DnsUpdater\Record;
 use DnsUpdater\UpdateRecord\AdapterFactory;
+use DnsUpdater\UpdateRecord\UpdateRecord;
 use GuzzleHttp\Client;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -20,7 +21,7 @@ class DnsUpdateCommand extends Command
     /**
      * @inheritdoc
      */
-    public function configure()
+    public function configure(): void
     {
         $this
             ->setName('dns:update')
@@ -41,7 +42,7 @@ class DnsUpdateCommand extends Command
     /**
      * @inheritdoc
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $inputOutput = new SymfonyStyle($input, $output);
         $ipResolver = new CanIHazIpResolver(new Client());
@@ -69,7 +70,14 @@ class DnsUpdateCommand extends Command
         );
     }
 
-    private function getAdapter(string $adapter = null, array $params, SymfonyStyle $inputOutput)
+    /**
+     * @param string|null $adapter
+     * @param array $params
+     * @param SymfonyStyle $inputOutput
+     *
+     * @return UpdateRecord
+     */
+    private function getAdapter(string $adapter = null, array $params, SymfonyStyle $inputOutput): UpdateRecord
     {
         $adapterName = $adapter ?? $inputOutput->askQuestion(new AdapterChoice());
         $adapterName = strtolower($adapterName);

@@ -8,17 +8,17 @@ use Symfony\Component\Console\Question\ChoiceQuestion;
 
 class AdapterChoiceSpec extends ObjectBehavior
 {
-    function it_implements_choice_question()
+    public function it_implements_choice_question(): void
     {
         $this->shouldImplement(ChoiceQuestion::class);
     }
 
-    function it_asks_which_adapter_should_be_used()
+    public function it_asks_which_adapter_should_be_used(): void
     {
         $this->getQuestion()->shouldReturn(AdapterChoice::QUESTION);
     }
 
-    function it_has_autocomplete_values()
+    public function it_has_autocomplete_values(): void
     {
         $this->getAutocompleterValues()->shouldReturn(AdapterChoice::AVAILABLE_ADAPTERS);
     }

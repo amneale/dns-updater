@@ -35,7 +35,7 @@ class FakeUpdateRecord implements UpdateRecord
     /**
      * @param Record[] $existingRecords
      */
-    public function setExistingRecords(array $existingRecords)
+    public function setExistingRecords(array $existingRecords): void
     {
         $this->existingRecords = $existingRecords;
     }
@@ -53,7 +53,7 @@ class FakeUpdateRecord implements UpdateRecord
      *
      * @return Record|null
      */
-    public function find(Record $record)
+    public function find(Record $record): ?Record
     {
         foreach ($this->existingRecords as $existingRecord) {
             if ($existingRecord->isSame($record)) {

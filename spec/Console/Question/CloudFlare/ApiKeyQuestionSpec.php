@@ -8,17 +8,17 @@ use Symfony\Component\Console\Question\Question;
 
 class ApiKeyQuestionSpec extends ObjectBehavior
 {
-    function it_implements_question()
+    public function it_implements_question(): void
     {
         $this->shouldImplement(Question::class);
     }
 
-    function it_asks_for_an_api_key()
+    public function it_asks_for_an_api_key(): void
     {
         $this->getQuestion()->shouldReturn(ApiKeyQuestion::QUESTION);
     }
 
-    function it_should_be_hidden()
+    public function it_should_be_hidden(): void
     {
         $this->shouldBeHidden();
     }

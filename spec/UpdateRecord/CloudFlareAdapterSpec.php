@@ -17,7 +17,7 @@ class CloudFlareAdapterSpec extends ObjectBehavior
     const DOMAIN = 'test.domain';
     const IP = '123.456.789.0';
 
-    function let(Zone $zone, Dns $dns, Record $record)
+    public function let(Zone $zone, Dns $dns, Record $record): void
     {
         $zone->zones(self::DOMAIN, CloudFlareAdapter::STATUS_ACTIVE)->willReturn(
             (object) [
@@ -45,12 +45,12 @@ class CloudFlareAdapterSpec extends ObjectBehavior
         $this->beConstructedWith($zone, $dns);
     }
 
-    function it_implements_record_persister_adapter()
+    public function it_implements_record_persister_adapter(): void
     {
         $this->shouldImplement(UpdateRecord::class);
     }
 
-    function it_creates_a_new_record(Dns $dns, Record $record)
+    public function it_creates_a_new_record(Dns $dns, Record $record): void
     {
         $dns->list_records(self::ZONE_ID, Record::TYPE_ADDRESS, self::HOST . '.' . self::DOMAIN)->willReturn(
             (object) ['success' => true]
@@ -62,7 +62,7 @@ class CloudFlareAdapterSpec extends ObjectBehavior
         $this->persist($record)->shouldReturn($record);
     }
 
-    function it_updates_an_existing_record(Dns $dns, Record $record)
+    public function it_updates_an_existing_record(Dns $dns, Record $record): void
     {
         $dns->list_records(self::ZONE_ID, Record::TYPE_ADDRESS, self::HOST . '.' . self::DOMAIN)->willReturn(
             (object) [
@@ -80,14 +80,14 @@ class CloudFlareAdapterSpec extends ObjectBehavior
         $this->persist($record)->shouldReturn($record);
     }
 
-    function it_throws_an_exception_if_it_does_not_find_a_zone_id(Zone $zone, Record $record)
+    public function it_throws_an_exception_if_it_does_not_find_a_zone_id(Zone $zone, Record $record): void
     {
         $zone->zones(self::DOMAIN, CloudFlareAdapter::STATUS_ACTIVE)->willReturn((object) ['success' => true]);
 
         $this->shouldThrow(\InvalidArgumentException::class)->during('persist', [$record]);
     }
 
-    function it_throws_an_exception_if_the_zones_endpoint_errors(Zone $zone, Record $record)
+    public function it_throws_an_exception_if_the_zones_endpoint_errors(Zone $zone, Record $record): void
     {
         $zone->zones(self::DOMAIN, CloudFlareAdapter::STATUS_ACTIVE)->willReturn(
             (object) [
@@ -99,7 +99,7 @@ class CloudFlareAdapterSpec extends ObjectBehavior
         $this->shouldThrow(new \RuntimeException('zones_error'))->during('persist', [$record]);
     }
 
-    function it_throws_an_exception_if_the_list_records_endpoint_errors(Dns $dns, Record $record)
+    public function it_throws_an_exception_if_the_list_records_endpoint_errors(Dns $dns, Record $record): void
     {
         $dns->list_records(self::ZONE_ID, Record::TYPE_ADDRESS, self::HOST . '.' . self::DOMAIN)->willReturn(
             (object) [
@@ -111,7 +111,7 @@ class CloudFlareAdapterSpec extends ObjectBehavior
         $this->shouldThrow(new \RuntimeException('list_records_error'))->during('persist', [$record]);
     }
 
-    function it_throws_an_exception_if_the_create_record_endpoint_errors(Dns $dns, Record $record)
+    public function it_throws_an_exception_if_the_create_record_endpoint_errors(Dns $dns, Record $record): void
     {
         $dns->list_records(self::ZONE_ID, Record::TYPE_ADDRESS, self::HOST . '.' . self::DOMAIN)->willReturn(
             (object) ['success' => true]
@@ -126,7 +126,7 @@ class CloudFlareAdapterSpec extends ObjectBehavior
         $this->shouldThrow(new \RuntimeException('create_record_error'))->during('persist', [$record]);
     }
 
-    function it_throws_an_exception_if_the_update_record_endpoint_errors(Dns $dns, Record $record)
+    public function it_throws_an_exception_if_the_update_record_endpoint_errors(Dns $dns, Record $record): void
     {
         $dns->update(self::ZONE_ID, self::RECORD_ID, Record::TYPE_ADDRESS, self::HOST, self::IP)->willReturn(
             (object) [
@@ -138,7 +138,7 @@ class CloudFlareAdapterSpec extends ObjectBehavior
         $this->shouldThrow(new \RuntimeException('update_record_error'))->during('persist', [$record]);
     }
 
-    function it_translates_root_domain_name(Record $record, Dns $dns)
+    public function it_translates_root_domain_name(Record $record, Dns $dns): void
     {
         $record->getName()->willReturn('@');
         $dns->list_records(self::ZONE_ID, Record::TYPE_ADDRESS, self::DOMAIN)->willReturn((object) ['success' => true]);

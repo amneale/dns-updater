@@ -21,9 +21,11 @@ class AdapterFactory
         switch ($adapter) {
             case DigitalOceanAdapter::NAME:
                 $api = new DigitalOceanV2(new GuzzleHttpAdapter(...$params));
+
                 return new DigitalOceanAdapter($api);
             case CloudFlareAdapter::NAME:
                 $api = new Api(...$params);
+
                 return new CloudFlareAdapter(new Zone($api), new Dns($api));
         }
 

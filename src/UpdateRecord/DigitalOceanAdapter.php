@@ -30,23 +30,26 @@ final class DigitalOceanAdapter implements UpdateRecord
     }
 
     /**
-     * @param \DnsUpdater\Record $record
+     * @param Record $record
      *
-     * @return \DnsUpdater\Record
+     * @return Record
      */
     public function persist(Record $record): Record
     {
         $domainId = $this->fetchDomainId($record->getDomain(), $record->getName());
 
-        if ($domainId) {
-            $this->domainRecordApi->updateData($record->getDomain(), $domainId, (string) $record->getValue());
+        if (null === $domainId) {
+            $this->domainRecordApi->create(
+                $record->getDomain(),
+                Record::TYPE_ADDRESS,
+                $record->getName(),
+                $record->getValue()
+            );
 
             return $record;
         }
 
-        $this->domainRecordApi->create(
-            $record->getDomain(), Record::TYPE_ADDRESS, $record->getName(), $record->getValue()
-        );
+        $this->domainRecordApi->updateData($record->getDomain(), $domainId, (string) $record->getValue());
 
         return $record;
     }
@@ -57,7 +60,7 @@ final class DigitalOceanAdapter implements UpdateRecord
      *
      * @return int|null
      */
-    private function fetchDomainId(string $domainName, string $recordName)
+    private function fetchDomainId(string $domainName, string $recordName): ?int
     {
         if (!isset($this->domainRecords[$domainName])) {
             $this->domainRecords[$domainName] = $this->domainRecordApi->getAll($domainName);

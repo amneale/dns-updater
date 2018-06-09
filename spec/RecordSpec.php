@@ -11,32 +11,32 @@ class RecordSpec extends ObjectBehavior
     const TEST_NAME = 'my';
     const TEST_VALUE = '111.222.333.444';
 
-    function let()
+    public function let(): void
     {
         $this->beConstructedWith(self::TEST_DOMAIN, self::TEST_NAME, Record::TYPE_ADDRESS, self::TEST_VALUE);
     }
 
-    function it_has_a_domain()
+    public function it_has_a_domain(): void
     {
         $this->getDomain()->shouldReturn(self::TEST_DOMAIN);
     }
 
-    function it_has_a_name()
+    public function it_has_a_name(): void
     {
         $this->getName()->shouldReturn(self::TEST_NAME);
     }
 
-    function it_has_a_type()
+    public function it_has_a_type(): void
     {
         $this->getType()->shouldReturn(Record::TYPE_ADDRESS);
     }
 
-    function it_has_a_value()
+    public function it_has_a_value(): void
     {
         $this->getValue()->shouldReturn(self::TEST_VALUE);
     }
 
-    function it_will_return_same_as_record_with_same_values(Record $record)
+    public function it_will_return_same_as_record_with_same_values(Record $record): void
     {
         $record->getDomain()->willReturn(self::TEST_DOMAIN);
         $record->getName()->willReturn(self::TEST_NAME);
@@ -45,7 +45,7 @@ class RecordSpec extends ObjectBehavior
         $this->shouldBeSame($record);
     }
 
-    function it_will_return_not_same_as_record_with_different_values(Record $record)
+    public function it_will_return_not_same_as_record_with_different_values(Record $record): void
     {
         $record->getDomain()->willReturn(self::TEST_DOMAIN);
         $record->getName()->willReturn(self::TEST_NAME);

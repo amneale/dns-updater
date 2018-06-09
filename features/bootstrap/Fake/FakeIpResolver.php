@@ -23,7 +23,7 @@ class FakeIpResolver implements IpResolver
     /**
      * @param IpAddress $ipAddress
      */
-    public function setIpAddress(IpAddress $ipAddress)
+    public function setIpAddress(IpAddress $ipAddress): void
     {
         $this->ipAddress = $ipAddress;
     }
