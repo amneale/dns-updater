@@ -10,17 +10,19 @@ class FakeUpdateRecord implements UpdateRecord
     /**
      * @var Record[]
      */
-    private $existingRecords = [];
+    public $existingRecords = [];
 
     /**
-     * @param Record $record
-     *
-     * @return Record
+     * @inheritdoc
      */
     public function persist(Record $record): Record
     {
         foreach ($this->existingRecords as $key => $existingRecord) {
-            if ($existingRecord->isSame($record)) {
+            if (
+                $existingRecord->getDomain() === $record->getDomain() &&
+                $existingRecord->getName() === $record->getName() &&
+                $existingRecord->getType() === $record->getType()
+            ) {
                 $this->existingRecords[$key] = $record;
 
                 return $record;
@@ -30,37 +32,5 @@ class FakeUpdateRecord implements UpdateRecord
         $this->existingRecords[] = $record;
 
         return $record;
-    }
-
-    /**
-     * @param Record[] $existingRecords
-     */
-    public function setExistingRecords(array $existingRecords): void
-    {
-        $this->existingRecords = $existingRecords;
-    }
-
-    /**
-     * @return Record[]
-     */
-    public function getExistingRecords(): array
-    {
-        return $this->existingRecords;
-    }
-
-    /**
-     * @param Record $record
-     *
-     * @return Record|null
-     */
-    public function find(Record $record): ?Record
-    {
-        foreach ($this->existingRecords as $existingRecord) {
-            if ($existingRecord->isSame($record)) {
-                return $existingRecord;
-            }
-        }
-
-        return null;
     }
 }

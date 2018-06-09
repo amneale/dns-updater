@@ -71,16 +71,4 @@ class Record
     {
         return $this->value;
     }
-
-    /**
-     * @param Record $record
-     *
-     * @return bool
-     */
-    public function isSame(Record $record): bool
-    {
-        return $this->domain === $record->getDomain()
-            && $this->name === $record->getName()
-            && $this->type === $record->getType();
-    }
 }

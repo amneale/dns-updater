@@ -2,8 +2,14 @@
 <?php
 
 use DnsUpdater\Console\Application;
+use DnsUpdater\IpResolver\CanIHazIpResolver;
+use DnsUpdater\UpdateRecord\AdapterFactory;
+use GuzzleHttp\Client;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-$application = new Application();
+$application = new Application(
+    new CanIHazIpResolver(new Client()),
+    new AdapterFactory()
+);
 $application->run();

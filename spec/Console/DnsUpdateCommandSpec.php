@@ -2,11 +2,18 @@
 
 namespace spec\DnsUpdater\Console;
 
+use DnsUpdater\IpResolver\IpResolver;
+use DnsUpdater\UpdateRecord\AdapterFactory;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Console\Command\Command;
 
 class DnsUpdateCommandSpec extends ObjectBehavior
 {
+    public function let(IpResolver $ipResolver, AdapterFactory $adapterFactory): void
+    {
+        $this->beConstructedWith($ipResolver, $adapterFactory);
+    }
+
     public function it_provides_the_dns_update_console_command(): void
     {
         $this->shouldBeAnInstanceOf(Command::class);

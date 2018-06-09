@@ -4,11 +4,10 @@ namespace DnsUpdater\Console;
 
 use DnsUpdater\Console\Question\AdapterChoice;
 use DnsUpdater\Console\Question\AdapterQuestionProvider;
-use DnsUpdater\IpResolver\CanIHazIpResolver;
+use DnsUpdater\IpResolver\IpResolver;
 use DnsUpdater\Record;
 use DnsUpdater\UpdateRecord\AdapterFactory;
 use DnsUpdater\UpdateRecord\UpdateRecord;
-use GuzzleHttp\Client;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -18,6 +17,29 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class DnsUpdateCommand extends Command
 {
+    /**
+     * @var IpResolver
+     */
+    private $ipResolver;
+
+    /**
+     * @var AdapterFactory
+     */
+    private $adapterFactory;
+
+    /**
+     * @param IpResolver $ipResolver
+     * @param AdapterFactory $adapterFactory
+     * @param null|string $name
+     */
+    public function __construct(IpResolver $ipResolver, AdapterFactory $adapterFactory, ?string $name = null)
+    {
+        $this->ipResolver = $ipResolver;
+        $this->adapterFactory = $adapterFactory;
+
+        parent::__construct($name);
+    }
+
     /**
      * @inheritdoc
      */
@@ -45,13 +67,12 @@ class DnsUpdateCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $inputOutput = new SymfonyStyle($input, $output);
-        $ipResolver = new CanIHazIpResolver(new Client());
 
         $record = new Record(
             $input->getArgument('domain'),
             $input->getArgument('name'),
             $input->getOption('type'),
-            $input->getOption('value') ?? $ipResolver->getIpAddress()
+            $input->getOption('value') ?? $this->ipResolver->getIpAddress()
         );
 
         $adapter = $this->getAdapter($input->getOption('adapter'), $input->getOption('params'), $inputOutput);
@@ -89,8 +110,6 @@ class DnsUpdateCommand extends Command
             }
         }
 
-        $adapterFactory = new AdapterFactory();
-
-        return $adapterFactory->build($adapterName, $params);
+        return $this->adapterFactory->build($adapterName, $params);
     }
 }

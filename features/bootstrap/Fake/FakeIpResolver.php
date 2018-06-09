@@ -10,21 +10,13 @@ class FakeIpResolver implements IpResolver
     /**
      * @var IpAddress
      */
-    private $ipAddress;
+    public $ipAddress;
 
     /**
-     * @return IpAddress
+     * @inheritdoc
      */
     public function getIpAddress(): IpAddress
     {
         return $this->ipAddress;
-    }
-
-    /**
-     * @param IpAddress $ipAddress
-     */
-    public function setIpAddress(IpAddress $ipAddress): void
-    {
-        $this->ipAddress = $ipAddress;
     }
 }

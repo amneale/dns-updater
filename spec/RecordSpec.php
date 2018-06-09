@@ -35,22 +35,4 @@ class RecordSpec extends ObjectBehavior
     {
         $this->getValue()->shouldReturn(self::TEST_VALUE);
     }
-
-    public function it_will_return_same_as_record_with_same_values(Record $record): void
-    {
-        $record->getDomain()->willReturn(self::TEST_DOMAIN);
-        $record->getName()->willReturn(self::TEST_NAME);
-        $record->getType()->willReturn(Record::TYPE_ADDRESS);
-
-        $this->shouldBeSame($record);
-    }
-
-    public function it_will_return_not_same_as_record_with_different_values(Record $record): void
-    {
-        $record->getDomain()->willReturn(self::TEST_DOMAIN);
-        $record->getName()->willReturn(self::TEST_NAME);
-        $record->getType()->willReturn('X');
-
-        $this->shouldNotBeSame($record);
-    }
 }

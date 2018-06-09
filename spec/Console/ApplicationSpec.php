@@ -2,15 +2,16 @@
 
 namespace spec\DnsUpdater\Console;
 
-use DnsUpdater\UpdateRecord\UpdateRecord;
+use DnsUpdater\IpResolver\IpResolver;
+use DnsUpdater\UpdateRecord\AdapterFactory;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Console\Application;
 
 class ApplicationSpec extends ObjectBehavior
 {
-    public function it_extends_base_application(UpdateRecord $recordRepository): void
+    public function it_extends_base_application(IpResolver $ipResolver, AdapterFactory $adapterFactory): void
     {
-        $this->beConstructedWith($recordRepository);
+        $this->beConstructedWith($ipResolver, $adapterFactory);
         $this->shouldHaveType(Application::class);
     }
 }
