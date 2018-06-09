@@ -1,0 +1,113 @@
+<?php
+
+/**
+ * See the README for a list of rules and explanations
+ * @see https://github.com/FriendsOfPHP/PHP-CS-Fixer
+ */
+
+$finder = PhpCsFixer\Finder::create()
+    ->files()
+    ->in(__DIR__ . '/features')
+    ->in(__DIR__ . '/spec')
+    ->in(__DIR__ . '/src')
+    ->name('*.php');
+
+return PhpCsFixer\Config::create()
+    ->setRiskyAllowed(true)
+    ->setRules([
+        // Include all PSR-2 rules
+        '@PSR2' => true,
+
+        // Project specific
+        'array_syntax' => ['syntax' => 'short'],
+        'strict_comparison' => true, // @risky
+        'yoda_style' => true, // [@Symfony]
+        'is_null' => true, // [@Symfony:risky]
+        'return_type_declaration' => ['space_before' => 'none'], // [@Symfony]
+        'ordered_imports' => ['sortAlgorithm' => 'alpha'],
+        'no_unused_imports' => true, // [@Symfony]
+        'no_trailing_comma_in_singleline_array' => true, // [@Symfony]
+        'multiline_whitespace_before_semicolons' => ['strategy' => 'no_multi_line'],
+        'fully_qualified_strict_types' => true,
+        'simplified_null_return' => true, // [@Symfony]
+        'return_assignment' => true,
+
+        // Additional whitespace rules
+        'blank_line_before_statement' => true, // [@Symfony]
+        'no_singleline_whitespace_before_semicolons' => true, // [@Symfony]
+        'no_extra_blank_lines' => true, // [@Symfony]
+        'ternary_operator_spaces' => true, // [@Symfony]
+        'trim_array_spaces' => true, // [@Symfony]
+        'space_after_semicolon' => true,  // [@Symfony]
+        'single_blank_line_before_namespace' => true, // [@Symfony]
+        'object_operator_without_whitespace' => true, // [@Symfony]
+        'no_whitespace_before_comma_in_array' => true, // [@Symfony]
+        'no_multiline_whitespace_around_double_arrow' => true, // [@Symfony]
+        'no_leading_namespace_whitespace' => true, // [@Symfony]
+        'no_blank_lines_after_class_opening' => true, // [@Symfony]
+        'linebreak_after_opening_tag' => true,
+        'function_typehint_space' => true, // [@Symfony]
+        'blank_line_after_opening_tag' => true, // [@Symfony]
+        'blank_line_after_namespace' => true, // [@PSR2, @Symfony]
+        'no_whitespace_in_blank_line' => true, // [@Symfony]
+
+        // Additional useful formatting rules
+        'ternary_to_null_coalescing' => true, // [@PHP70Migration]
+        'single_quote' => true, // [@Symfony]
+        'normalize_index_brace' => true, // [@Symfony]
+        'no_useless_else' => true,
+        'no_unneeded_curly_braces' => true, // [@Symfony]
+        'no_unneeded_control_parentheses' => true, // [@Symfony]
+        'no_trailing_comma_in_list_call' => true, // [@Symfony]
+        'no_superfluous_elseif' => true,
+        'no_short_echo_tag' => true,
+        'no_leading_import_slash' => true, // [@Symfony]
+        'no_empty_statement' => true, // [@Symfony]
+        'new_with_braces' => true, // [@Symfony]
+        'native_function_casing' => true, // [@Symfony]
+        'method_chaining_indentation' => true,
+        'magic_constant_casing' => true, // [@Symfony]
+        'lowercase_cast' => true, // [@Symfony]
+        'combine_consecutive_unsets' => true,
+        'no_unreachable_default_argument_value' => true, // @risky
+        'ordered_class_elements' => [
+            'use_trait',
+            'constant_public',
+            'constant_protected',
+            'constant_private',
+            'property_public',
+            'property_protected',
+            'property_private',
+            'construct',
+            'destruct',
+            'magic',
+            'phpunit',
+            'method_public',
+            'method_protected',
+            'method_private',
+        ],
+
+        // Docblock
+        'phpdoc_trim' => true, // [@Symfony]
+        'phpdoc_types' => true, // [@Symfony]
+        'phpdoc_scalar' => true, // [@Symfony]
+        'phpdoc_no_useless_inheritdoc' => true, // [@Symfony]
+        'phpdoc_no_empty_return' => true, // [@Symfony]
+        'phpdoc_indent' => true, // [@Symfony]
+        'no_empty_phpdoc' => true, // [@Symfony]
+        'no_empty_comment' => true, // [@Symfony]
+        'no_blank_lines_after_phpdoc' => true, // [@Symfony]
+        'multiline_comment_opening_closing' => true,
+        'align_multiline_comment' => true,
+        'phpdoc_return_self_reference' => true, // [@Symfony]
+
+        // Annotation formatting
+        'doctrine_annotation_spaces' => true, // [@DoctrineAnnotation]
+        'doctrine_annotation_indentation' => true, // [@DoctrineAnnotation]
+        'doctrine_annotation_braces' => true, // [@DoctrineAnnotation]
+        'doctrine_annotation_array_assignment' => true, // [@DoctrineAnnotation]
+
+        // PHP 7
+        'void_return' => true, // [@PHP71Migration:risky]
+    ])
+    ->setFinder($finder);

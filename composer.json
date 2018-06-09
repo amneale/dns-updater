@@ -20,7 +20,8 @@
     "require-dev": {
         "phpspec/phpspec": "^4.3",
         "behat/behat": "^3.3",
-        "leanphp/phpspec-code-coverage": "^4.2"
+        "leanphp/phpspec-code-coverage": "^4.2",
+        "friendsofphp/php-cs-fixer": "^2.12"
     },
     "autoload": {
         "psr-4": {

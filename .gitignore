@@ -4,3 +4,5 @@ app/config/parameters.yml
 var/logs/*.log
 .idea/
 .DS_Store
+.php_cs
+.php_cs.cache
