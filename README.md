@@ -1,7 +1,7 @@
 # DnsUpdater 
-![Build Status](https://img.shields.io/github/workflow/status/dividohq/index-rate-api-sdk-php/tests?style=flat-square)
-[![Test Coverage](https://img.shields.io/codecov/c/github/amneale/dns-updater?style=flat-square)](https://codeclimate.com/github/amneale/dns-updater/coverage)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/amneale/dns-updater/tests?style=flat-square)
 [![Code Climate](https://img.shields.io/codeclimate/maintainability/amneale/dns-updater?style=flat-square)](https://codeclimate.com/github/amneale/dns-updater)
+[![Test Coverage](https://img.shields.io/codecov/c/github/amneale/dns-updater?style=flat-square)](https://codeclimate.com/github/amneale/dns-updater/coverage)
 
 ## Install
 Via Composer
