@@ -1,7 +1,7 @@
 # DnsUpdater 
-[![Build Status](https://travis-ci.org/amneale/dns-updater.svg?branch=master)](https://travis-ci.org/amneale/dns-updater)
-[![Test Coverage](https://codeclimate.com/github/amneale/dns-updater/badges/coverage.svg)](https://codeclimate.com/github/amneale/dns-updater/coverage)
-[![Code Climate](https://codeclimate.com/github/amneale/dns-updater/badges/gpa.svg)](https://codeclimate.com/github/amneale/dns-updater)
+![Build Status](https://img.shields.io/github/workflow/status/dividohq/index-rate-api-sdk-php/tests?style=flat-square)
+[![Test Coverage](https://img.shields.io/codecov/c/github/amneale/dns-updater?style=flat-square)](https://codeclimate.com/github/amneale/dns-updater/coverage)
+[![Code Climate](https://img.shields.io/codeclimate/maintainability/amneale/dns-updater?style=flat-square)](https://codeclimate.com/github/amneale/dns-updater)
 
 ## Install
 Via Composer
