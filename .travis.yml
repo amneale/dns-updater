@@ -19,9 +19,7 @@ before_script:
   - ./cc-test-reporter before-build
 
 script:
-  - ./vendor/bin/php-cs-fixer fix --verbose --dry-run
-  - ./vendor/bin/phpspec run --format=dot
-  - ./vendor/bin/behat --format=progress
+  - make ci
 
 after_script:
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT

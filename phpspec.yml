@@ -3,7 +3,7 @@ suites:
     namespace: DnsUpdater
     psr4_prefix: DnsUpdater
 extensions:
-  LeanPHP\PhpSpec\CodeCoverage\CodeCoverageExtension:
+  FriendsOfPhpSpec\PhpSpec\CodeCoverage\CodeCoverageExtension:
     format: [clover, html]
     output:
       clover: build/logs/clover.xml
