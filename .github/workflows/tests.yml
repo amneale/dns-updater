@@ -15,7 +15,7 @@ jobs:
       uses: shivammathur/setup-php@master
       with:
         php-version: '7.1'
-        coverage: none
+        coverage: xdebug
     - name: Install dependencies
       run: make vendor
     - name: Run tests & publish code coverage
