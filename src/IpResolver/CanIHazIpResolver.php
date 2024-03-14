@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DnsUpdater\IpResolver;
 
 use DnsUpdater\Value\IpAddress;
@@ -7,29 +9,12 @@ use GuzzleHttp\ClientInterface;
 
 final class CanIHazIpResolver implements IpResolver
 {
-    const URI = 'canihazip.com/s';
+    public const URI = 'canihazip.com/s';
 
-    /**
-     * @var ClientInterface
-     */
-    private $client;
+    private IpAddress $ipAddress;
 
-    /**
-     * @var IpAddress
-     */
-    private $ipAddress;
+    public function __construct(private ClientInterface $client) {}
 
-    /**
-     * @param ClientInterface $client
-     */
-    public function __construct(ClientInterface $client)
-    {
-        $this->client = $client;
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function getIpAddress(): IpAddress
     {
         if (!isset($this->ipAddress)) {

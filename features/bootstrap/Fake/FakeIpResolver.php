@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Fake;
 
 use DnsUpdater\IpResolver\IpResolver;
@@ -8,13 +10,10 @@ use DnsUpdater\Value\IpAddress;
 class FakeIpResolver implements IpResolver
 {
     /**
-     * @var \DnsUpdater\Value\IpAddress
+     * @var IpAddress
      */
     public $ipAddress;
 
-    /**
-     * @inheritdoc
-     */
     public function getIpAddress(): IpAddress
     {
         return $this->ipAddress;

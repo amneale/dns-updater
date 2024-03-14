@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DnsUpdater\Console;
 
 use DnsUpdater\Adapter\AdapterFactory;
@@ -8,7 +10,7 @@ use Symfony\Component\Console\Application as BaseApplication;
 
 final class Application extends BaseApplication
 {
-    const VERSION = '0.2.0';
+    public const VERSION = '0.2.0';
 
     public function __construct(IpResolver $ipResolver, AdapterFactory $adapterFactory)
     {

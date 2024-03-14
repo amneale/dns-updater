@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DnsUpdater\Console;
 
 use DnsUpdater\Adapter\Adapter;
@@ -18,32 +20,14 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class DnsUpdateCommand extends Command
 {
-    /**
-     * @var IpResolver
-     */
-    private $ipResolver;
-
-    /**
-     * @var AdapterFactory
-     */
-    private $adapterFactory;
-
-    /**
-     * @param IpResolver $ipResolver
-     * @param AdapterFactory $adapterFactory
-     * @param null|string $name
-     */
-    public function __construct(IpResolver $ipResolver, AdapterFactory $adapterFactory, ?string $name = null)
-    {
-        $this->ipResolver = $ipResolver;
-        $this->adapterFactory = $adapterFactory;
-
+    public function __construct(
+        private readonly IpResolver $ipResolver,
+        private readonly AdapterFactory $adapterFactory,
+        ?string $name = null
+    ) {
         parent::__construct($name);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function configure(): void
     {
         $this
@@ -62,10 +46,7 @@ class DnsUpdateCommand extends Command
             );
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $inputOutput = new SymfonyStyle($input, $output);
 
@@ -73,7 +54,7 @@ class DnsUpdateCommand extends Command
             $input->getArgument('domain'),
             $input->getArgument('name'),
             $input->getOption('type'),
-            $input->getOption('value') ?? $this->ipResolver->getIpAddress()
+            $input->getOption('value') ?? (string) $this->ipResolver->getIpAddress()
         );
 
         $dnsUpdater = new DnsUpdater(
@@ -89,19 +70,14 @@ class DnsUpdateCommand extends Command
                     $record->getName(),
                     $record->getType(),
                     $record->getValue(),
-                ]
+                ],
             ]
         );
+
+        return 0;
     }
 
-    /**
-     * @param string|null $adapter
-     * @param array $params
-     * @param SymfonyStyle $inputOutput
-     *
-     * @return Adapter
-     */
-    private function getAdapter(string $adapter = null, array $params, SymfonyStyle $inputOutput): Adapter
+    private function getAdapter(?string $adapter, array $params, SymfonyStyle $inputOutput): Adapter
     {
         $adapterName = $adapter ?? $inputOutput->askQuestion(new AdapterChoice());
         $adapterName = strtolower($adapterName);

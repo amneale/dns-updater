@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DnsUpdater\Console\Question;
 
 use Assert\Assert;
@@ -13,8 +15,6 @@ use Symfony\Component\Console\Question\Question;
 class AdapterQuestionProvider
 {
     /**
-     * @param string $adapter
-     *
      * @return Question[]
      */
     public function getQuestionsFor(string $adapter): array
@@ -24,11 +24,13 @@ class AdapterQuestionProvider
         switch ($adapter) {
             case DigitalOceanAdapter::NAME:
                 return [new AccessTokenQuestion()];
+
             case CloudFlareAdapter::NAME:
                 return [
                     new EmailQuestion(),
                     new ApiKeyQuestion(),
                 ];
+
             default:
                 return [];
         }

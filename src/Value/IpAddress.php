@@ -1,19 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DnsUpdater\Value;
 
 use Assert\Assert;
 
 class IpAddress
 {
-    /**
-     * @var string
-     */
-    private $ipAddress;
+    private string $ipAddress;
 
-    /**
-     * @param string $ipAddress
-     */
     public function __construct(string $ipAddress)
     {
         $ipAddress = trim($ipAddress);
@@ -22,9 +18,6 @@ class IpAddress
         $this->ipAddress = $ipAddress;
     }
 
-    /**
-     * @return string
-     */
     public function __toString(): string
     {
         return $this->ipAddress;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\DnsUpdater\IpResolver;
 
 use DnsUpdater\IpResolver\CanIHazIpResolver;
@@ -11,7 +13,7 @@ use Psr\Http\Message\StreamInterface;
 
 class CanIHazIpResolverSpec extends ObjectBehavior
 {
-    const TEST_IP = '192.168.0.1';
+    public const TEST_IP = '192.168.0.1';
 
     public function let(ClientInterface $client): void
     {

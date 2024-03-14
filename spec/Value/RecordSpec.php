@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\DnsUpdater\Value;
 
 use DnsUpdater\Value\Record;
@@ -7,9 +9,9 @@ use PhpSpec\ObjectBehavior;
 
 class RecordSpec extends ObjectBehavior
 {
-    const TEST_DOMAIN = 'test.domain';
-    const TEST_NAME = 'my';
-    const TEST_VALUE = '111.222.333.444';
+    public const TEST_DOMAIN = 'test.domain';
+    public const TEST_NAME = 'my';
+    public const TEST_VALUE = '111.222.333.444';
 
     public function let(): void
     {

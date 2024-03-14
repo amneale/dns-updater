@@ -30,7 +30,7 @@ test: vendor ## Run test suite
 	./vendor/bin/phpspec run -fpretty
 	./vendor/bin/behat
 
-code-style: vendor ## Analyse code style
+fmt: vendor ## Fix code style
 	./vendor/bin/php-cs-fixer fix
 
 ci: vendor ## Run CI tests and exit if defect found
