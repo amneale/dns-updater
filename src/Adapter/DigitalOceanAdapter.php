@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace DnsUpdater\Adapter;
 
 use DigitalOceanV2\Api\DomainRecord as DomainRecordApi;
-use DigitalOceanV2\DigitalOceanV2;
+use DigitalOceanV2\Client;
 use DigitalOceanV2\Entity\DomainRecord;
 use DnsUpdater\Value\Record;
 
@@ -18,7 +18,7 @@ final class DigitalOceanAdapter implements Adapter
 
     private DomainRecordApi $domainRecordApi;
 
-    public function __construct(DigitalOceanV2 $digitalOceanApi)
+    public function __construct(Client $digitalOceanApi)
     {
         $this->domainRecordApi = $digitalOceanApi->domainRecord();
     }

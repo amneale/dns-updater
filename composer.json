@@ -12,10 +12,10 @@
     "require": {
         "php": "^8.2",
         "beberlei/assert": "^3.3",
-        "guzzlehttp/guzzle": "^6.3",
+        "guzzlehttp/guzzle": "^7.8",
         "jamesryanbell/cloudflare": "^1.11",
         "symfony/console": "^7",
-        "toin0u/digitalocean-v2": "^2.2"
+        "toin0u/digitalocean-v2": "^4.9"
     },
     "require-dev": {
         "ext-xdebug": "*",
@@ -39,6 +39,9 @@
         "preferred-install": {
             "*": "dist"
         },
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
     }
 }
