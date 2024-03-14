@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DnsUpdater\Console\Question\DigitalOcean;
 
 use Symfony\Component\Console\Question\Question;
 
 final class AccessTokenQuestion extends Question
 {
-    const QUESTION = 'What is your access token?';
+    public const QUESTION = 'What is your access token?';
 
     public function __construct()
     {

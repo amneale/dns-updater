@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DnsUpdater;
 
 use DnsUpdater\Adapter\Adapter;
@@ -12,17 +14,11 @@ class DnsUpdater
      */
     private $adapter;
 
-    /**
-     * @param Adapter $adapter
-     */
     public function __construct(Adapter $adapter)
     {
         $this->adapter = $adapter;
     }
 
-    /**
-     * @param Record $record
-     */
     public function persist(Record $record): void
     {
         $this->adapter->persist($record);

@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DnsUpdater\Console\Question\CloudFlare;
 
 use Symfony\Component\Console\Question\Question;
 
 final class ApiKeyQuestion extends Question
 {
-    const QUESTION = 'What is your API Key?';
+    public const QUESTION = 'What is your API Key?';
 
     public function __construct()
     {

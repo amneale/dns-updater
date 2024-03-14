@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Fake;
 
 use DnsUpdater\Adapter\Adapter;
@@ -12,20 +14,11 @@ class FakeAdapterFactory extends AdapterFactory
      */
     private $adapter;
 
-    /**
-     * @param Adapter $adapter
-     */
     public function __construct(Adapter $adapter)
     {
         $this->adapter = $adapter;
     }
 
-    /**
-     * @param string $adapter
-     * @param array $params
-     *
-     * @return Adapter
-     */
     public function build(string $adapter, array $params): Adapter
     {
         return $this->adapter;

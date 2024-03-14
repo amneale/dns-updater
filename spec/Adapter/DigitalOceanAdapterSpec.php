@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\DnsUpdater\Adapter;
 
 use DigitalOceanV2\Api\DomainRecord as DomainRecordApi;
@@ -11,10 +13,10 @@ use PhpSpec\ObjectBehavior;
 
 class DigitalOceanAdapterSpec extends ObjectBehavior
 {
-    const TEST_DOMAIN = 'test.domain';
-    const TEST_HOST = '@';
-    const TEST_DATA = '123.45.67.89';
-    const TEST_ID = 123;
+    public const TEST_DOMAIN = 'test.domain';
+    public const TEST_HOST = '@';
+    public const TEST_DATA = '123.45.67.89';
+    public const TEST_ID = 123;
 
     public function let(DigitalOceanV2 $digitalOceanApi, DomainRecordApi $domainRecordApi, Record $record): void
     {
@@ -48,7 +50,7 @@ class DigitalOceanAdapterSpec extends ObjectBehavior
                 'id' => self::TEST_ID,
                 'type' => Record::TYPE_ADDRESS,
                 'name' => self::TEST_HOST,
-            ])
+            ]),
         ]);
         $domainRecordApi->updateData(self::TEST_DOMAIN, self::TEST_ID, self::TEST_DATA)->shouldBeCalled();
 

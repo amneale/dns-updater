@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DnsUpdater\Adapter;
 
 use Cloudflare\Zone;
@@ -8,8 +10,8 @@ use DnsUpdater\Value\Record;
 
 final class CloudFlareAdapter implements Adapter
 {
-    const NAME = 'cloudflare';
-    const STATUS_ACTIVE = 'active';
+    public const NAME = 'cloudflare';
+    public const STATUS_ACTIVE = 'active';
 
     /**
      * @var Zone
@@ -21,19 +23,12 @@ final class CloudFlareAdapter implements Adapter
      */
     private $dns;
 
-    /**
-     * @param Zone $zone
-     * @param Dns $dns
-     */
     public function __construct(Zone $zone, Dns $dns)
     {
         $this->zone = $zone;
         $this->dns = $dns;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function persist(Record $record): void
     {
         $zoneId = $this->getZoneId($record);
@@ -47,9 +42,6 @@ final class CloudFlareAdapter implements Adapter
     }
 
     /**
-     * @param \DnsUpdater\Value\Record $record
-     *
-     * @return string
      * @throws \Exception
      */
     private function getZoneId(Record $record): string
@@ -65,10 +57,7 @@ final class CloudFlareAdapter implements Adapter
     }
 
     /**
-     * @param string $zoneId
-     * @param Record $record
-     *
-     * @return string|null
+     * @return null|string
      */
     private function fetchRecordId(string $zoneId, Record $record)
     {
@@ -78,21 +67,13 @@ final class CloudFlareAdapter implements Adapter
         return $response->result[0]->id ?? null;
     }
 
-    /**
-     * @param Record $record
-     *
-     * @return string
-     */
     private function getNormalisedRecordName(Record $record): string
     {
         return '@' === $record->getName()
             ? $record->getDomain()
-            : $record->getName() . '.' . $record->getDomain();
+            : $record->getName().'.'.$record->getDomain();
     }
 
-    /**
-     * @param \stdClass $response
-     */
     private function checkResponse(\stdClass $response): void
     {
         if (!$response->success) {

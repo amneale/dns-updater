@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Assert\Assert;
 use Behat\Behat\Context\Context;
 use DnsUpdater\Console\DnsUpdateCommand;
@@ -49,10 +51,6 @@ class FeatureContext implements Context
 
     /**
      * @Given there is the A record :name for domain :domain with the value :value
-     *
-     * @param string $name
-     * @param string $domain
-     * @param string $value
      */
     public function thereIsTheARecordForDomainWithTheValue(string $name, string $domain, string $value): void
     {
@@ -64,8 +62,6 @@ class FeatureContext implements Context
 
     /**
      * @Given my IP resolves as :ip
-     *
-     * @param string $ip
      */
     public function myIpResolvesAs(string $ip): void
     {
@@ -74,10 +70,6 @@ class FeatureContext implements Context
 
     /**
      * @When /^I update the A record "(.*?)" for domain "(.*?)"(?: with the value "(.*?)")?$/
-     *
-     * @param string $name
-     * @param string $domain
-     * @param string $value
      *
      * @throws Exception
      */
@@ -99,10 +91,6 @@ class FeatureContext implements Context
 
     /**
      * @Then there should exist the A record :name for domain :domain with the value :value
-     *
-     * @param string $name
-     * @param string $domain
-     * @param string $value
      */
     public function thereShouldExistTheDomainARecordWithTheValue(string $name, string $domain, string $value): void
     {
@@ -114,19 +102,14 @@ class FeatureContext implements Context
 
     /**
      * @param \DnsUpdater\Value\Record[] $records
-     * @param string $domain
-     * @param string $name
-     * @param string $type
-     *
-     * @return \DnsUpdater\Value\Record|null
      */
     private function findRecord(array $records, string $domain, string $name, string $type): ?Record
     {
         foreach ($records as $record) {
             if (
-                $domain === $record->getDomain() &&
-                $name === $record->getName() &&
-                $type === $record->getType()
+                $domain === $record->getDomain()
+                && $name === $record->getName()
+                && $type === $record->getType()
             ) {
                 return $record;
             }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\DnsUpdater\Adapter;
 
 use Cloudflare\Zone;
@@ -11,11 +13,11 @@ use PhpSpec\ObjectBehavior;
 
 class CloudFlareAdapterSpec extends ObjectBehavior
 {
-    const ZONE_ID = '1234567890';
-    const RECORD_ID = '0987654321';
-    const HOST = 'my';
-    const DOMAIN = 'test.domain';
-    const IP = '123.456.789.0';
+    public const ZONE_ID = '1234567890';
+    public const RECORD_ID = '0987654321';
+    public const HOST = 'my';
+    public const DOMAIN = 'test.domain';
+    public const IP = '123.456.789.0';
 
     public function let(Zone $zone, Dns $dns, Record $record): void
     {
@@ -23,17 +25,17 @@ class CloudFlareAdapterSpec extends ObjectBehavior
             (object) [
                 'success' => true,
                 'result' => [
-                    (object) ['id' => self::ZONE_ID]
+                    (object) ['id' => self::ZONE_ID],
                 ],
             ]
         );
 
-        $dns->list_records(self::ZONE_ID, Record::TYPE_ADDRESS, self::HOST . '.' . self::DOMAIN)->willReturn(
+        $dns->list_records(self::ZONE_ID, Record::TYPE_ADDRESS, self::HOST.'.'.self::DOMAIN)->willReturn(
             (object) [
                 'success' => true,
                 'result' => [
-                    (object) ['id' => self::RECORD_ID]
-                ]
+                    (object) ['id' => self::RECORD_ID],
+                ],
             ]
         );
 
@@ -52,7 +54,7 @@ class CloudFlareAdapterSpec extends ObjectBehavior
 
     public function it_creates_a_new_record(Dns $dns, Record $record): void
     {
-        $dns->list_records(self::ZONE_ID, Record::TYPE_ADDRESS, self::HOST . '.' . self::DOMAIN)
+        $dns->list_records(self::ZONE_ID, Record::TYPE_ADDRESS, self::HOST.'.'.self::DOMAIN)
             ->willReturn((object) ['success' => true])
             ->shouldBeCalled();
         $dns->create(self::ZONE_ID, Record::TYPE_ADDRESS, self::HOST, self::IP)
@@ -64,13 +66,13 @@ class CloudFlareAdapterSpec extends ObjectBehavior
 
     public function it_updates_an_existing_record(Dns $dns, Record $record): void
     {
-        $dns->list_records(self::ZONE_ID, Record::TYPE_ADDRESS, self::HOST . '.' . self::DOMAIN)
+        $dns->list_records(self::ZONE_ID, Record::TYPE_ADDRESS, self::HOST.'.'.self::DOMAIN)
             ->willReturn(
                 (object) [
                     'success' => true,
                     'result' => [
-                        (object) ['id' => self::RECORD_ID]
-                    ]
+                        (object) ['id' => self::RECORD_ID],
+                    ],
                 ]
             )->shouldBeCalled();
 
@@ -104,7 +106,7 @@ class CloudFlareAdapterSpec extends ObjectBehavior
 
     public function it_throws_an_exception_if_the_list_records_endpoint_errors(Dns $dns, Record $record): void
     {
-        $dns->list_records(self::ZONE_ID, Record::TYPE_ADDRESS, self::HOST . '.' . self::DOMAIN)
+        $dns->list_records(self::ZONE_ID, Record::TYPE_ADDRESS, self::HOST.'.'.self::DOMAIN)
             ->willReturn(
                 (object) [
                     'success' => false,
@@ -117,7 +119,7 @@ class CloudFlareAdapterSpec extends ObjectBehavior
 
     public function it_throws_an_exception_if_the_create_record_endpoint_errors(Dns $dns, Record $record): void
     {
-        $dns->list_records(self::ZONE_ID, Record::TYPE_ADDRESS, self::HOST . '.' . self::DOMAIN)
+        $dns->list_records(self::ZONE_ID, Record::TYPE_ADDRESS, self::HOST.'.'.self::DOMAIN)
             ->willReturn((object) ['success' => true])
             ->shouldBeCalled();
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DnsUpdater\Console\Question;
 
 use DnsUpdater\Adapter\CloudFlareAdapter;
@@ -8,8 +10,8 @@ use Symfony\Component\Console\Question\ChoiceQuestion;
 
 final class AdapterChoice extends ChoiceQuestion
 {
-    const QUESTION = 'Which adapter would you like to use?';
-    const AVAILABLE_ADAPTERS = [
+    public const QUESTION = 'Which adapter would you like to use?';
+    public const AVAILABLE_ADAPTERS = [
         DigitalOceanAdapter::NAME,
         CloudFlareAdapter::NAME,
     ];

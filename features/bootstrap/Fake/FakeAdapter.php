@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Fake;
 
 use DnsUpdater\Adapter\Adapter;
@@ -12,16 +14,13 @@ class FakeAdapter implements Adapter
      */
     public $existingRecords = [];
 
-    /**
-     * @inheritdoc
-     */
     public function persist(Record $record): void
     {
         foreach ($this->existingRecords as $key => $existingRecord) {
             if (
-                $existingRecord->getDomain() === $record->getDomain() &&
-                $existingRecord->getName() === $record->getName() &&
-                $existingRecord->getType() === $record->getType()
+                $existingRecord->getDomain() === $record->getDomain()
+                && $existingRecord->getName() === $record->getName()
+                && $existingRecord->getType() === $record->getType()
             ) {
                 $this->existingRecords[$key] = $record;
 

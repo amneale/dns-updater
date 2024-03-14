@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\DnsUpdater\Console\Question;
 
 use DnsUpdater\Adapter\CloudFlareAdapter;

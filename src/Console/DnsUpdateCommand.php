@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DnsUpdater\Console;
 
 use DnsUpdater\Adapter\Adapter;
@@ -28,11 +30,6 @@ class DnsUpdateCommand extends Command
      */
     private $adapterFactory;
 
-    /**
-     * @param IpResolver $ipResolver
-     * @param AdapterFactory $adapterFactory
-     * @param null|string $name
-     */
     public function __construct(IpResolver $ipResolver, AdapterFactory $adapterFactory, ?string $name = null)
     {
         $this->ipResolver = $ipResolver;
@@ -41,9 +38,6 @@ class DnsUpdateCommand extends Command
         parent::__construct($name);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function configure(): void
     {
         $this
@@ -62,9 +56,6 @@ class DnsUpdateCommand extends Command
             );
     }
 
-    /**
-     * @inheritdoc
-     */
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $inputOutput = new SymfonyStyle($input, $output);
@@ -89,18 +80,11 @@ class DnsUpdateCommand extends Command
                     $record->getName(),
                     $record->getType(),
                     $record->getValue(),
-                ]
+                ],
             ]
         );
     }
 
-    /**
-     * @param string|null $adapter
-     * @param array $params
-     * @param SymfonyStyle $inputOutput
-     *
-     * @return Adapter
-     */
     private function getAdapter(string $adapter = null, array $params, SymfonyStyle $inputOutput): Adapter
     {
         $adapterName = $adapter ?? $inputOutput->askQuestion(new AdapterChoice());

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DnsUpdater\Adapter;
 
 use DigitalOceanV2\Api\DomainRecord as DomainRecordApi;
@@ -9,7 +11,7 @@ use DnsUpdater\Value\Record;
 
 final class DigitalOceanAdapter implements Adapter
 {
-    const NAME = 'digitalocean';
+    public const NAME = 'digitalocean';
 
     /**
      * @var DomainRecord
@@ -21,17 +23,11 @@ final class DigitalOceanAdapter implements Adapter
      */
     private $domainRecordApi;
 
-    /**
-     * @param DigitalOceanV2 $digitalOceanApi
-     */
     public function __construct(DigitalOceanV2 $digitalOceanApi)
     {
         $this->domainRecordApi = $digitalOceanApi->domainRecord();
     }
 
-    /**
-     * @inheritdoc
-     */
     public function persist(Record $record): void
     {
         $domainId = $this->fetchDomainId($record->getDomain(), $record->getName());
@@ -50,12 +46,6 @@ final class DigitalOceanAdapter implements Adapter
         );
     }
 
-    /**
-     * @param string $domainName
-     * @param string $recordName
-     *
-     * @return int|null
-     */
     private function fetchDomainId(string $domainName, string $recordName): ?int
     {
         if (!isset($this->domainRecords[$domainName])) {
