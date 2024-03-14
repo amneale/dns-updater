@@ -11,20 +11,9 @@ final class CanIHazIpResolver implements IpResolver
 {
     public const URI = 'canihazip.com/s';
 
-    /**
-     * @var ClientInterface
-     */
-    private $client;
+    private IpAddress $ipAddress;
 
-    /**
-     * @var IpAddress
-     */
-    private $ipAddress;
-
-    public function __construct(ClientInterface $client)
-    {
-        $this->client = $client;
-    }
+    public function __construct(private ClientInterface $client) {}
 
     public function getIpAddress(): IpAddress
     {

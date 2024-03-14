@@ -8,10 +8,7 @@ use Assert\Assert;
 
 class IpAddress
 {
-    /**
-     * @var string
-     */
-    private $ipAddress;
+    private string $ipAddress;
 
     public function __construct(string $ipAddress)
     {

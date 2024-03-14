@@ -13,21 +13,7 @@ final class CloudFlareAdapter implements Adapter
     public const NAME = 'cloudflare';
     public const STATUS_ACTIVE = 'active';
 
-    /**
-     * @var Zone
-     */
-    private $zone;
-
-    /**
-     * @var Dns
-     */
-    private $dns;
-
-    public function __construct(Zone $zone, Dns $dns)
-    {
-        $this->zone = $zone;
-        $this->dns = $dns;
-    }
+    public function __construct(private readonly Zone $zone, private readonly Dns $dns) {}
 
     public function persist(Record $record): void
     {
@@ -56,10 +42,7 @@ final class CloudFlareAdapter implements Adapter
         return $response->result[0]->id;
     }
 
-    /**
-     * @return null|string
-     */
-    private function fetchRecordId(string $zoneId, Record $record)
+    private function fetchRecordId(string $zoneId, Record $record): ?string
     {
         $response = $this->dns->list_records($zoneId, $record->getType(), $this->getNormalisedRecordName($record));
         $this->checkResponse($response);

@@ -9,15 +9,7 @@ use DnsUpdater\Value\Record;
 
 class DnsUpdater
 {
-    /**
-     * @var Adapter
-     */
-    private $adapter;
-
-    public function __construct(Adapter $adapter)
-    {
-        $this->adapter = $adapter;
-    }
+    public function __construct(private readonly Adapter $adapter) {}
 
     public function persist(Record $record): void
     {

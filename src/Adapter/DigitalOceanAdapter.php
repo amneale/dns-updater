@@ -13,15 +13,10 @@ final class DigitalOceanAdapter implements Adapter
 {
     public const NAME = 'digitalocean';
 
-    /**
-     * @var DomainRecord
-     */
-    private $domainRecords;
+    /** @var DomainRecord[] */
+    private array $domainRecords;
 
-    /**
-     * @var DomainRecordApi
-     */
-    private $domainRecordApi;
+    private DomainRecordApi $domainRecordApi;
 
     public function __construct(DigitalOceanV2 $digitalOceanApi)
     {
@@ -33,7 +28,7 @@ final class DigitalOceanAdapter implements Adapter
         $domainId = $this->fetchDomainId($record->getDomain(), $record->getName());
 
         if (null !== $domainId) {
-            $this->domainRecordApi->updateData($record->getDomain(), $domainId, (string) $record->getValue());
+            $this->domainRecordApi->updateData($record->getDomain(), $domainId, $record->getValue());
 
             return;
         }

@@ -20,21 +20,11 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class DnsUpdateCommand extends Command
 {
-    /**
-     * @var IpResolver
-     */
-    private $ipResolver;
-
-    /**
-     * @var AdapterFactory
-     */
-    private $adapterFactory;
-
-    public function __construct(IpResolver $ipResolver, AdapterFactory $adapterFactory, ?string $name = null)
-    {
-        $this->ipResolver = $ipResolver;
-        $this->adapterFactory = $adapterFactory;
-
+    public function __construct(
+        private readonly IpResolver $ipResolver,
+        private readonly AdapterFactory $adapterFactory,
+        ?string $name = null
+    ) {
         parent::__construct($name);
     }
 
@@ -56,7 +46,7 @@ class DnsUpdateCommand extends Command
             );
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $inputOutput = new SymfonyStyle($input, $output);
 
@@ -64,7 +54,7 @@ class DnsUpdateCommand extends Command
             $input->getArgument('domain'),
             $input->getArgument('name'),
             $input->getOption('type'),
-            $input->getOption('value') ?? $this->ipResolver->getIpAddress()
+            $input->getOption('value') ?? (string) $this->ipResolver->getIpAddress()
         );
 
         $dnsUpdater = new DnsUpdater(
@@ -83,9 +73,11 @@ class DnsUpdateCommand extends Command
                 ],
             ]
         );
+
+        return 0;
     }
 
-    private function getAdapter(string $adapter = null, array $params, SymfonyStyle $inputOutput): Adapter
+    private function getAdapter(?string $adapter, array $params, SymfonyStyle $inputOutput): Adapter
     {
         $adapterName = $adapter ?? $inputOutput->askQuestion(new AdapterChoice());
         $adapterName = strtolower($adapterName);

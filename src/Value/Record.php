@@ -8,33 +8,12 @@ class Record
 {
     public const TYPE_ADDRESS = 'A';
 
-    /**
-     * @var string
-     */
-    private $domain;
-
-    /**
-     * @var string
-     */
-    private $name;
-
-    /**
-     * @var string
-     */
-    private $type;
-
-    /**
-     * @var string
-     */
-    private $value;
-
-    public function __construct(string $domain, string $name, string $type, string $value)
-    {
-        $this->type = $type;
-        $this->domain = $domain;
-        $this->name = $name;
-        $this->value = $value;
-    }
+    public function __construct(
+        private readonly string $domain,
+        private readonly string $name,
+        private readonly string $type,
+        private readonly string $value
+    ) {}
 
     public function getDomain(): string
     {
